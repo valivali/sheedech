@@ -1,0 +1,14 @@
+{
+  "semi": false,
+  "trailingComma": "none",
+  "singleQuote": false,
+  "printWidth": 140,
+  "overrides": [
+    {
+      "files": ["*.scss", "*.css"],
+      "options": {
+        "singleQuote": false
+      }
+    }
+  ]
+}

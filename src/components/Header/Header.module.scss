@@ -1,0 +1,41 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--background-overlay);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-light);
+  z-index: 100;
+  
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+  }
+  
+  .logo {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--primary-gold);
+    letter-spacing: -0.5px;
+  }
+}
+
+@media (min-width: 768px) {
+  .header {
+    .container {
+      padding: 0 40px;
+    }
+    
+    .logo {
+      font-size: 28px;
+    }
+  }
+}
+

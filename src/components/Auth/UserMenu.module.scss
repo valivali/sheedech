@@ -1,0 +1,29 @@
+.signInButton {
+  background: var(--primary-gold);
+  color: var(--background-primary);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: var(--primary-deep);
+    box-shadow: var(--shadow-soft);
+  }
+}
+
+.userMenu {
+  display: flex;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .signInButton {
+    padding: 12px 30px;
+    font-size: 15px;
+  }
+}
+

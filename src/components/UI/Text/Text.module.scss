@@ -1,0 +1,84 @@
+.text {
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.text--xs { font-size: 0.75rem; }
+.text--sm { font-size: 0.875rem; }
+.text--md { font-size: 1rem; }
+.text--lg { font-size: 1.125rem; }
+.text--xl { font-size: 1.25rem; }
+.text--2xl { font-size: 1.5rem; }
+.text--3xl { font-size: 1.875rem; }
+.text--4xl { font-size: 2.25rem; }
+
+.title {
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+}
+
+.title--xs { font-size: 0.875rem; }
+.title--sm { font-size: 1rem; }
+.title--md { font-size: 1.25rem; }
+.title--lg { font-size: 1.5rem; }
+.title--xl { font-size: 2rem; }
+.title--2xl { font-size: 2.5rem; }
+.title--3xl { font-size: 3rem; }
+.title--4xl { font-size: 4rem; }
+
+.subtitle {
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.subtitle--xs { font-size: 0.75rem; }
+.subtitle--sm { font-size: 0.875rem; }
+.subtitle--md { font-size: 1rem; }
+.subtitle--lg { font-size: 1.125rem; }
+.subtitle--xl { font-size: 1.25rem; }
+.subtitle--2xl { font-size: 1.5rem; }
+.subtitle--3xl { font-size: 1.875rem; }
+.subtitle--4xl { font-size: 2.25rem; }
+
+.blockquote {
+  text-align: center;
+  
+  .quoteText {
+    font-style: italic;
+    color: var(--primary-deep);
+    line-height: 1.6;
+    max-width: 700px;
+    margin: 0 auto;
+    position: relative;
+    padding: 0 30px;
+    
+    &::before {
+      content: '"';
+      position: absolute;
+      left: 0;
+      top: -10px;
+      font-size: 60px;
+      color: var(--primary-warmth);
+      opacity: 0.3;
+    }
+  }
+  
+  .quoteAuthor {
+    display: block;
+    margin-top: 10px;
+    color: var(--text-light);
+    font-size: 14px;
+  }
+}
+
+.blockquote--xs .quoteText { font-size: 0.875rem; }
+.blockquote--sm .quoteText { font-size: 1rem; }
+.blockquote--md .quoteText { font-size: 1.25rem; }
+.blockquote--lg .quoteText { font-size: 1.375rem; }
+.blockquote--xl .quoteText { font-size: 1.5rem; }
+.blockquote--2xl .quoteText { font-size: 1.625rem; }
+.blockquote--3xl .quoteText { font-size: 1.75rem; }
+.blockquote--4xl .quoteText { font-size: 2rem; }
+
