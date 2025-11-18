@@ -6,6 +6,8 @@ export const Button = ({
   size = 'md', 
   children, 
   className,
+  isLoading = false,
+  disabled,
   ...props 
 }: ButtonProps) => {
   const variantClass = `button--${variant}`;
@@ -13,8 +15,8 @@ export const Button = ({
   const classes = [styles.button, styles[variantClass], styles[sizeClass], className].filter(Boolean).join(' ');
 
   return (
-    <button className={classes} {...props}>
-      {children}
+    <button className={classes} disabled={disabled || isLoading} {...props}>
+      {isLoading ? 'Loading...' : children}
     </button>
   );
 };

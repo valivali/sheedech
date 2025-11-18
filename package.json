@@ -7,14 +7,27 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,scss,css,json,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,scss,css,json,md}\"",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.35.2",
+    "@hookform/resolvers": "^5.2.2",
+    "@prisma/client": "^6.19.0",
+    "@tanstack/react-query": "^5.62.19",
+    "date-fns": "^4.1.0",
     "next": "16.0.3",
+    "prisma": "^6.19.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "sass": "^1.83.0"
+    "react-hook-form": "^7.66.1",
+    "react-phone-input-2": "^2.15.1",
+    "sass": "^1.83.0",
+    "ts-pattern": "^5.9.0",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@eslint/js": "^9.18.0",
@@ -23,6 +36,7 @@
     "@types/react-dom": "^19",
     "@typescript-eslint/eslint-plugin": "^8.47.0",
     "@typescript-eslint/parser": "^8.47.0",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.0.3",
     "eslint-config-prettier": "^10.1.8",

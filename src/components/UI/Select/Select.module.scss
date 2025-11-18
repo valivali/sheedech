@@ -1,0 +1,122 @@
+.select {
+  position: relative;
+  width: 100%;
+  font-family: inherit;
+}
+
+.selectTrigger {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 15px;
+  background: var(--background-primary);
+  border: 1.5px solid var(--border-light);
+  border-radius: 8px;
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+  min-height: 48px;
+
+  &:focus,
+  &:focus-within {
+    outline: none;
+    border-color: var(--primary-gold);
+    box-shadow: 0 0 0 3px rgba(196, 153, 98, 0.1);
+  }
+
+  &:hover:not(:focus) {
+    border-color: var(--border-medium);
+  }
+}
+
+.selectTriggerOpen {
+  border-color: var(--primary-gold);
+  box-shadow: 0 0 0 3px rgba(196, 153, 98, 0.1);
+}
+
+.selectValue {
+  color: var(--text-primary);
+}
+
+.selectPlaceholder {
+  color: var(--text-light);
+}
+
+.selectInput {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: inherit;
+  font-family: inherit;
+
+  &::placeholder {
+    color: var(--text-light);
+  }
+}
+
+.selectArrow {
+  font-size: 12px;
+  color: var(--text-secondary);
+  transition: transform 0.2s ease;
+  margin-left: 8px;
+  user-select: none;
+}
+
+.selectArrowOpen {
+  transform: rotate(180deg);
+}
+
+.selectDropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--background-primary);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  box-shadow: var(--shadow-hover);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  margin-top: 4px;
+}
+
+.selectOption {
+  padding: 12px 16px;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: background-color 0.15s ease;
+
+  &:hover,
+  &.selectOptionHighlighted {
+    background: var(--background-secondary);
+  }
+
+  &.selectOptionSelected {
+    background: var(--primary-gold);
+    color: white;
+  }
+
+  &:first-child {
+    border-radius: 6px 6px 0 0;
+  }
+
+  &:last-child {
+    border-radius: 0 0 6px 6px;
+  }
+
+  &:only-child {
+    border-radius: 6px;
+  }
+}
+
+.selectNoOptions {
+  padding: 12px 16px;
+  color: var(--text-secondary);
+  text-align: center;
+  font-style: italic;
+}

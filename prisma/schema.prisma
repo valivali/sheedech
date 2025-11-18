@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String           @id @default(cuid())
+  clerkId         String?          @unique
+  email           String           @unique
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  onboarding      UserOnboarding?
+}
+
+model UserOnboarding {
+  id              String           @id @default(cuid())
+  userId          String           @unique
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  firstName       String
+  lastName        String
+  address         String
+  phoneNumber     String
+  completedSteps  Int              @default(0)
+  isCompleted     Boolean          @default(false)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  familyMembers   FamilyMember[]
+  pets            Pet[]
+}
+
+model FamilyMember {
+  id              String           @id @default(cuid())
+  onboardingId    String
+  onboarding      UserOnboarding   @relation(fields: [onboardingId], references: [id], onDelete: Cascade)
+  name            String
+  age             Int?
+  relationship    String?
+  createdAt       DateTime         @default(now())
+}
+
+model Pet {
+  id              String           @id @default(cuid())
+  onboardingId    String
+  onboarding      UserOnboarding   @relation(fields: [onboardingId], references: [id], onDelete: Cascade)
+  name            String
+  kind            String?
+  createdAt       DateTime         @default(now())
+}
+

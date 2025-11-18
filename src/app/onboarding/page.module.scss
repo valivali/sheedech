@@ -1,0 +1,28 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--background-secondary);
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+
+  @media (min-width: 768px) {
+    padding: 2rem;
+  }
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  padding: 1.5rem 0;
+
+  @media (min-width: 768px) {
+    padding: 2rem 0;
+  }
+}
+
