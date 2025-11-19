@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import { PersonalInfoStep } from './Steps/PersonalInfoStep';
+import { PreferencesStep } from './Steps/PreferencesStep';
 import { UnderConstructionStep } from './Steps/UnderConstructionStep';
 import { useOnboardingData } from '@/api/frontend/onboarding';
 import { Loading } from '@/components/UI/Loading';
@@ -11,9 +12,9 @@ import { Text } from '@/components/UI/Text';
 import { ProgressBar } from '@/components/UI/ProgressBar';
 import styles from './OnboardingWizard.module.scss';
 
-export type WizardStep = 'personal-info' | 'under-construction';
+export type WizardStep = 'personal-info' | 'preferences' | 'under-construction';
 
-const STEP_ORDER: WizardStep[] = ['personal-info', 'under-construction'];
+const STEP_ORDER: WizardStep[] = ['personal-info', 'preferences', 'under-construction'];
 
 export const OnboardingWizard = () => {
   const { data: onboardingData, isLoading, error } = useOnboardingData();
@@ -95,7 +96,7 @@ export const OnboardingWizard = () => {
                   className={`${styles.stepButton} ${isCurrent ? styles.stepButtonActive : ''} ${isCompleted ? styles.stepButtonCompleted : ''}`}
                   type="button"
                 >
-                  {index + 1}. {step === 'personal-info' ? 'Personal Info' : 'Step 2'}
+                  {index + 1}. {step === 'personal-info' ? 'Personal Info' : step === 'preferences' ? 'Preferences' : 'Step 3'}
                 </button>
               );
             })}
@@ -110,8 +111,15 @@ export const OnboardingWizard = () => {
             initialData={onboardingData?.personalInfo}
           />
         )}
+        {currentStep === 'preferences' && (
+          <PreferencesStep 
+            onNext={handleNextStep}
+            onBack={() => setCurrentStep('personal-info')}
+            initialData={onboardingData?.preferences}
+          />
+        )}
         {currentStep === 'under-construction' && (
-          <UnderConstructionStep onBack={() => setCurrentStep('personal-info')} />
+          <UnderConstructionStep onBack={() => setCurrentStep('preferences')} />
         )}
       </div>
     </div>

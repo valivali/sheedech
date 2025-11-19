@@ -24,12 +24,46 @@ model UserOnboarding {
   lastName        String
   address         String
   phoneNumber     String
+  preferences     UserPreferences?
   completedSteps  Int              @default(0)
   isCompleted     Boolean          @default(false)
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
   familyMembers   FamilyMember[]
   pets            Pet[]
+}
+
+model UserPreferences {
+  id                         String   @id @default(cuid())
+  onboardingId               String   @unique
+  onboarding                 UserOnboarding @relation(fields: [onboardingId], references: [id], onDelete: Cascade)
+
+  // Food & Dining Preferences
+  dietaryRestrictions        String[]
+  dietaryRestrictionsOther   String?
+  strongDislikes             String?
+  alcoholStance              String?
+  smokingAsHost              String[]
+  smokingAsHostOther         String?
+  smokingAsGuest             String[]
+  smokingAsGuestOther        String?
+  spiceLevel                 String?
+
+  // Vibe Preferences
+  eventTypes                 String[]
+  preferredAgeRange          String?
+  noiseLevel                 String?
+
+  // Social Comfort
+  petsBotherYou              Boolean?
+  kidsOkay                   Boolean?
+
+  // Contribution Preferences
+  byobPotluckOkay            Boolean?
+  contributionPreference     String?
+
+  createdAt                  DateTime @default(now())
+  updatedAt                  DateTime @updatedAt
 }
 
 model FamilyMember {

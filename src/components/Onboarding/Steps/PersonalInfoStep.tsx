@@ -249,7 +249,7 @@ export const PersonalInfoStep = ({ onNext, initialData }: PersonalInfoStepProps)
             control={control}
             render={({ field: { onChange, value } }) => (
               <PhoneInput
-                country={'us'}
+                country={'ca'}
                 value={value}
                 onChange={(phone) => onChange(phone)}
                 inputProps={{
@@ -258,6 +258,7 @@ export const PersonalInfoStep = ({ onNext, initialData }: PersonalInfoStepProps)
                 containerClass={styles.phoneInputContainer}
                 enableSearch={true}
                 disableSearchIcon={false}
+                disableCountryGuess= {true}
               />
             )}
           />
@@ -370,7 +371,7 @@ export const PersonalInfoStep = ({ onNext, initialData }: PersonalInfoStepProps)
           <Button
             type="submit"
             disabled={!isValid || isPending}
-            size="lg"
+            size="md"
           >
             {isPending ? 'Saving...' : 'Next Step'}
           </Button>

@@ -24,6 +24,7 @@ export async function GET() {
           include: {
             familyMembers: true,
             pets: true,
+            preferences: true,
           },
         },
       },
@@ -45,6 +46,7 @@ export async function GET() {
         familyMembers: user.onboarding.familyMembers,
         pets: user.onboarding.pets,
       },
+      preferences: user.onboarding.preferences || undefined,
       completedSteps: user.onboarding.completedSteps,
       isCompleted: user.onboarding.isCompleted,
     });

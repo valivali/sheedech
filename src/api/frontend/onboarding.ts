@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { PersonalInfo, OnboardingData } from '@/types/onboarding';
+import { PersonalInfo, OnboardingData, Preferences } from '@/types/onboarding';
 
 const API_BASE = '/api/onboarding';
 
@@ -31,6 +31,22 @@ export const useSavePersonalInfo = () => {
         body: JSON.stringify(data),
       });
       if (!response.ok) throw new Error('Failed to save personal info');
+      return response.json();
+    },
+    onSuccess: () => {
+    },
+  });
+};
+
+export const useSavePreferences = () => {
+  return useMutation({
+    mutationFn: async (data: Preferences) => {
+      const response = await fetch(`${API_BASE}/preferences`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) throw new Error('Failed to save preferences');
       return response.json();
     },
     onSuccess: () => {

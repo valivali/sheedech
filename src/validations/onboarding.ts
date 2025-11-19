@@ -28,3 +28,26 @@ export type FamilyMemberFormData = z.infer<typeof familyMemberSchema>;
 export type PetFormData = z.infer<typeof petSchema>;
 export type PersonalInfoFormData = z.infer<typeof personalInfoSchema>;
 
+const textFieldSchema = z.string().max(512, 'Maximum 512 characters allowed').optional();
+
+export const preferencesSchema = z.object({
+  dietaryRestrictions: z.array(z.string()),
+  dietaryRestrictionsOther: textFieldSchema,
+  strongDislikes: textFieldSchema,
+  alcoholStance: z.string().optional(),
+  smokingAsHost: z.array(z.string()),
+  smokingAsHostOther: textFieldSchema,
+  smokingAsGuest: z.array(z.string()),
+  smokingAsGuestOther: textFieldSchema,
+  spiceLevel: z.string().optional(),
+  eventTypes: z.array(z.string()),
+  preferredAgeRange: textFieldSchema,
+  noiseLevel: z.string().optional(),
+  petsBotherYou: z.boolean().optional(),
+  kidsOkay: z.boolean().optional(),
+  byobPotluckOkay: z.boolean().optional(),
+  contributionPreference: z.string().optional(),
+});
+
+export type PreferencesFormData = z.infer<typeof preferencesSchema>;
+

@@ -20,8 +20,28 @@ export interface PersonalInfo {
   pets: Pet[];
 }
 
+export interface Preferences {
+  dietaryRestrictions: string[];
+  dietaryRestrictionsOther?: string;
+  strongDislikes?: string;
+  alcoholStance?: string;
+  smokingAsHost: string[];
+  smokingAsHostOther?: string;
+  smokingAsGuest: string[];
+  smokingAsGuestOther?: string;
+  spiceLevel?: string;
+  eventTypes: string[];
+  preferredAgeRange?: string;
+  noiseLevel?: string;
+  petsBotherYou?: boolean;
+  kidsOkay?: boolean;
+  byobPotluckOkay?: boolean;
+  contributionPreference?: string;
+}
+
 export interface OnboardingData {
   personalInfo?: PersonalInfo;
+  preferences?: Preferences;
   completedSteps: number;
   isCompleted: boolean;
 }
