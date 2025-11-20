@@ -25,6 +25,7 @@ export async function GET() {
             familyMembers: true,
             pets: true,
             preferences: true,
+            addressDetails: true,
           },
         },
       },
@@ -41,7 +42,8 @@ export async function GET() {
       personalInfo: {
         firstName: user.onboarding.firstName,
         lastName: user.onboarding.lastName,
-        address: user.onboarding.address,
+        address: user.onboarding.addressDetails?.formattedAddress || '',
+        addressDetails: user.onboarding.addressDetails,
         phoneNumber: user.onboarding.phoneNumber,
         familyMembers: user.onboarding.familyMembers,
         pets: user.onboarding.pets,

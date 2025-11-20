@@ -11,10 +11,26 @@ export interface Pet {
   kind?: string | null;
 }
 
+export interface AddressDetails {
+  id?: string;
+  lon?: number;
+  lat?: number;
+  postalCode?: string;
+  confidenceStreetLevel?: number;
+  confidenceCityLevel?: number;
+  formattedAddress: string;
+  streetName?: string;
+  houseNumber?: string;
+  city?: string;
+  state?: string;
+  country?: string;
+}
+
 export interface PersonalInfo {
   firstName: string;
   lastName: string;
   address: string;
+  addressDetails?: AddressDetails;
   phoneNumber: string;
   familyMembers: FamilyMember[];
   pets: Pet[];

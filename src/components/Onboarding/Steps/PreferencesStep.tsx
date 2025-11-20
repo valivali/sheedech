@@ -193,6 +193,7 @@ export const PreferencesStep = ({ onNext, onBack, initialData }: PreferencesStep
               <RadioGroup label="Alcohol stance">
                 {ALCOHOL_OPTIONS.map(option => (
                   <RadioItem
+                    key={option.value}
                     {...field}
                     value={option.value}
                     checked={field.value === option.value}
@@ -283,6 +284,7 @@ export const PreferencesStep = ({ onNext, onBack, initialData }: PreferencesStep
               <RadioGroup label="Spice level comfort">
                 {SPICE_LEVELS.map(option => (
                   <RadioItem
+                    key={option.value}
                     {...field}
                     value={option.value}
                     checked={field.value === option.value}
@@ -305,6 +307,7 @@ export const PreferencesStep = ({ onNext, onBack, initialData }: PreferencesStep
               <CheckboxGroup label="Type of events we enjoy">
                 {EVENT_TYPES.map(option => (
                   <CheckboxItem
+                    key={option.value}
                     checked={field.value.includes(option.value)}
                     onChange={() => {
                       field.onChange(handleCheckboxChange('eventTypes', option.value, field.value));
@@ -338,6 +341,7 @@ export const PreferencesStep = ({ onNext, onBack, initialData }: PreferencesStep
               <RadioGroup label="Preferred noise level">
                 {NOISE_LEVELS.map(option => (
                   <RadioItem
+                    key={option.value}
                     {...field}
                     value={option.value}
                     checked={field.value === option.value}
@@ -359,12 +363,14 @@ export const PreferencesStep = ({ onNext, onBack, initialData }: PreferencesStep
             render={({ field: { value, onChange } }) => (
               <RadioGroup label="Do pets bother you?">
                 <RadioItem
+                  key="yes"
                   checked={value === true}
                   onChange={() => onChange(true)}
                 >
                   Yes
                 </RadioItem>
                 <RadioItem
+                  key="no"
                   checked={value === false}
                   onChange={() => onChange(false)}
                 >
@@ -380,12 +386,14 @@ export const PreferencesStep = ({ onNext, onBack, initialData }: PreferencesStep
             render={({ field: { value, onChange } }) => (
               <RadioGroup label="Are kids okay in events?">
                 <RadioItem
+                  key="yes"
                   checked={value === true}
                   onChange={() => onChange(true)}
                 >
                   Yes
                 </RadioItem>
                 <RadioItem
+                  key="no"
                   checked={value === false}
                   onChange={() => onChange(false)}
                 >
@@ -405,12 +413,14 @@ export const PreferencesStep = ({ onNext, onBack, initialData }: PreferencesStep
             render={({ field: { value, onChange } }) => (
               <RadioGroup label="Are you okay with BYOB / potluck format?">
                 <RadioItem
+                  key="yes"
                   checked={value === true}
                   onChange={() => onChange(true)}
                 >
                   Yes
                 </RadioItem>
                 <RadioItem
+                  key="no"
                   checked={value === false}
                   onChange={() => onChange(false)}
                 >
@@ -427,6 +437,7 @@ export const PreferencesStep = ({ onNext, onBack, initialData }: PreferencesStep
               <RadioGroup label="Do you prefer to:">
                 {CONTRIBUTION_OPTIONS.map(option => (
                   <RadioItem
+                    key={option.value}
                     {...field}
                     value={option.value}
                     checked={field.value === option.value}

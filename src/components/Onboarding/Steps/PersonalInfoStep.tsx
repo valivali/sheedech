@@ -12,6 +12,7 @@ import { Button } from '@/components/UI/Button';
 import { Select } from '@/components/UI/Select';
 import { Chip } from '@/components/UI/Chip';
 import { useSavePersonalInfo } from '@/api/frontend/onboarding';
+import { useAddressAutocomplete } from '@/hooks';
 import { personalInfoSchema, PersonalInfoFormData, FamilyMemberFormData, PetFormData } from '@/validations/onboarding';
 import { PersonalInfo } from '@/types/onboarding';
 import styles from './PersonalInfoStep.module.scss';
@@ -96,7 +97,7 @@ export const PersonalInfoStep = ({ onNext, initialData }: PersonalInfoStepProps)
   const [currentPet, dispatchPet] = useReducer(petReducer, INITIAL_PET_STATE);
   const [petError, setPetError] = useState('');
 
-  const { control, handleSubmit, formState: { errors, isValid }, reset } = useForm<PersonalInfoFormData>({
+  const { control, handleSubmit, formState: { errors, isValid }, reset, setValue } = useForm<PersonalInfoFormData>({
     resolver: zodResolver(personalInfoSchema),
     mode: 'onChange',
     defaultValues: {
@@ -109,12 +110,25 @@ export const PersonalInfoStep = ({ onNext, initialData }: PersonalInfoStepProps)
     },
   });
 
+  const {
+    suggestions: addressSuggestions,
+    showSuggestions,
+    isLoadingSuggestions,
+    handleAddressChange,
+    handleSuggestionSelect,
+    handleAddressFocus,
+    handleAddressBlur,
+  } = useAddressAutocomplete({
+    setValue,
+    fieldName: 'address',
+  });
+
   useEffect(() => {
     if (initialData) {
       reset({
         firstName: initialData.firstName,
         lastName: initialData.lastName,
-        address: initialData.address,
+        address: initialData.addressDetails?.formattedAddress || '',
         phoneNumber: initialData.phoneNumber,
         familyMembers: initialData.familyMembers || [],
         pets: initialData.pets || [],
@@ -123,6 +137,7 @@ export const PersonalInfoStep = ({ onNext, initialData }: PersonalInfoStepProps)
       setPets(initialData.pets || []);
     }
   }, [initialData, reset]);
+
 
   const handleAddFamilyMember = () => {
     setFamilyError('');
@@ -226,19 +241,43 @@ export const PersonalInfoStep = ({ onNext, initialData }: PersonalInfoStepProps)
           />
         </div>
 
-        <Controller
-          name="address"
-          control={control}
-          render={({ field }) => (
-            <Input
-              {...field}
-              label="Address *"
-              error={errors.address?.message}
-              helperText="We will show estimated address to users until there is a match"
-              placeholder="123 Main St, City, State"
-            />
+        <div className={styles.addressContainer}>
+          <Controller
+            name="address"
+            control={control}
+            render={({ field }) => (
+              <Input
+                {...field}
+                label="Address *"
+                error={errors.address?.message}
+                helperText="We will show estimated address to users until there is a match"
+                placeholder="123 Main St, City, State"
+                onChange={(e) => {
+                  field.onChange(e);
+                  handleAddressChange(e.target.value);
+                }}
+                onFocus={handleAddressFocus}
+                onBlur={handleAddressBlur}
+              />
+            )}
+          />
+          {showSuggestions && addressSuggestions.length > 0 && (
+            <div className={styles.suggestionsDropdown}>
+              {addressSuggestions.map((suggestion, index) => (
+                <div
+                  key={index}
+                  className={styles.suggestionItem}
+                  onClick={() => handleSuggestionSelect(suggestion)}
+                >
+                  {suggestion.properties?.formatted || 'Unknown location'}
+                </div>
+              ))}
+            </div>
           )}
-        />
+          {isLoadingSuggestions && (
+            <div className={styles.loadingSuggestions}>Loading suggestions...</div>
+          )}
+        </div>
 
         <div className={styles.phoneInputWrapper}>
           <label className={styles.phoneInputLabel}>

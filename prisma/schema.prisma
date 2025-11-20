@@ -22,7 +22,7 @@ model UserOnboarding {
   user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   firstName       String
   lastName        String
-  address         String
+  addressDetails  Address?
   phoneNumber     String
   preferences     UserPreferences?
   completedSteps  Int              @default(0)
@@ -83,5 +83,31 @@ model Pet {
   name            String
   kind            String?
   createdAt       DateTime         @default(now())
+}
+
+model Address {
+  id                    String         @id @default(cuid())
+  onboardingId          String         @unique
+  onboarding            UserOnboarding @relation(fields: [onboardingId], references: [id], onDelete: Cascade)
+
+  // Geoapify API data for programmatic use
+  lon                   Float?
+  lat                   Float?
+  postalCode            String?
+
+  // Confidence levels from Geoapify
+  confidenceStreetLevel Float?
+  confidenceCityLevel   Float?
+
+  // Full address data for display
+  formattedAddress      String
+  streetName            String?
+  houseNumber           String?
+  city                  String?
+  state                 String?
+  country               String?
+
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
 }
 

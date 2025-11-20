@@ -18,7 +18,7 @@ export const petSchema = z.object({
 export const personalInfoSchema = z.object({
   firstName: z.string().min(2, 'First name must be at least 2 characters'),
   lastName: z.string().min(2, 'Last name must be at least 2 characters'),
-  address: z.string().min(5, 'Address must be at least 5 characters'),
+  address: z.string().min(5, 'Address must be at least 5 characters'), // Keep for form validation
   phoneNumber: z.string().min(10, 'Phone number must be valid'),
   familyMembers: z.array(familyMemberSchema),
   pets: z.array(petSchema),
