@@ -23,13 +23,15 @@ export const CheckboxGroup = ({
   children,
   label,
   error,
-  className
+  className,
+  labelClassName
 }: CheckboxGroupProps) => {
   const classes = [styles.checkboxGroup, className].filter(Boolean).join(' ');
+  const labelClasses = [styles.checkboxGroupLabel, labelClassName].filter(Boolean).join(' ');
 
   return (
     <div className={classes}>
-      {label && <div className={styles.checkboxGroupLabel}>{label}</div>}
+      {label && <div className={labelClasses}>{label}</div>}
       <div className={styles.checkboxGroupItems}>
         {children}
       </div>

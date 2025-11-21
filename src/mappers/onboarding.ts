@@ -1,4 +1,4 @@
-import { FamilyMember, Pet, PersonalInfo, AddressDetails } from '@/types/onboarding';
+import { FamilyMember, Pet, PersonalInfo, AddressDetails, GuestPreferences, HostPreferences } from '@/types/onboarding';
 
 export const mapPrismaFamilyMember = (member: any): FamilyMember => ({
   id: member.id,
@@ -38,5 +38,41 @@ export const mapPrismaOnboardingToPersonalInfo = (
   phoneNumber: onboarding.phoneNumber,
   familyMembers: onboarding.familyMembers.map(mapPrismaFamilyMember),
   pets: onboarding.pets.map(mapPrismaPet),
+});
+
+export const mapPrismaGuestPreferences = (prefs: any): GuestPreferences => ({
+  dietaryRestrictions: prefs.dietaryRestrictions || [],
+  dietaryRestrictionsOther: prefs.dietaryRestrictionsOther || undefined,
+  strongDislikes: prefs.strongDislikes || undefined,
+  alcoholStance: prefs.alcoholStance || undefined,
+  smokingAsGuest: prefs.smokingAsGuest || [],
+  smokingAsGuestOther: prefs.smokingAsGuestOther || undefined,
+  spiceLevel: prefs.spiceLevel || undefined,
+  petsBotherYou: prefs.petsBotherYou ?? undefined,
+  contributionPreference: prefs.contributionPreference || undefined,
+});
+
+export const mapPrismaHostPreferences = (prefs: any): HostPreferences => ({
+  smokingAsHost: prefs.smokingAsHost || [],
+  smokingAsHostOther: prefs.smokingAsHostOther || undefined,
+  eventTypes: prefs.eventTypes || [],
+  preferredAgeRange: prefs.preferredAgeRange || undefined,
+  noiseLevel: prefs.noiseLevel || undefined,
+  kidsOkay: prefs.kidsOkay ?? undefined,
+  byobPotluckOkay: prefs.byobPotluckOkay ?? undefined,
+  propertyType: prefs.propertyType || undefined,
+  neighborhoodNotes: prefs.neighborhoodNotes || undefined,
+  maxGuests: prefs.maxGuests ?? undefined,
+  indoorOutdoorSeating: prefs.indoorOutdoorSeating || undefined,
+  diningTableSize: prefs.diningTableSize ?? undefined,
+  accessibility: prefs.accessibility || [],
+  parking: prefs.parking || [],
+  publicTransportInfo: prefs.publicTransportInfo || undefined,
+  hasPets: prefs.hasPets ?? undefined,
+  hypoallergenicPet: prefs.hypoallergenicPet ?? undefined,
+  petsFreeRoam: prefs.petsFreeRoam ?? undefined,
+  quietHours: prefs.quietHours || undefined,
+  shoesOff: prefs.shoesOff ?? undefined,
+  diningAreaPhotos: prefs.diningAreaPhotos || [],
 });
 

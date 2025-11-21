@@ -5,7 +5,7 @@ import { personalInfoSchema } from '@/validations/onboarding';
 import { clerkClient } from '@clerk/nextjs/server';
 
 interface GeoapifyResponse {
-  features: Array<{
+  features?: Array<{
     properties: {
       formatted: string;
       lon: number;
@@ -24,6 +24,7 @@ interface GeoapifyResponse {
       coordinates: [number, number];
     };
   }>;
+  results?: Array<any>
 }
 
 async function validateAddress(text: string) {
@@ -31,7 +32,7 @@ async function validateAddress(text: string) {
     const response = await fetch(
       `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(
         text
-      )}&apiKey=${process.env.GEOAPIFY_KEY}&format=json&limit=1`
+      )}&apiKey=${process.env.NEXT_PUBLIC_GEOAPIFY_KEY}&format=json&limit=1`
     );
 
     if (!response.ok) {
@@ -40,35 +41,35 @@ async function validateAddress(text: string) {
 
     const data: GeoapifyResponse = await response.json();
 
-    if (!data.features || data.features.length === 0) {
+    if ((!data.results || data.results.length === 0) && (!data.features || data.features.length === 0)) {
       return null;
     }
 
-    const feature = data.features[0];
-    const properties = feature.properties;
+    const feature = data?.features?.[0] || data?.results?.[0];
+    const properties = feature.properties || feature.rank;
 
     // Log confidence levels if below threshold
-    if (properties.confidence_street_level < 0.5 || properties.confidence_city_level < 0.5) {
+    if (properties.confidence_street_level < 0.5 || properties?.confidence_city_level < 0.5) {
       console.warn('Low confidence address validation:', {
         address: text,
         confidence_street_level: properties.confidence_street_level,
-        confidence_city_level: properties.confidence_city_level,
-        formatted: properties.formatted,
+        confidence_city_level: properties.confidence_city_level ?? "",
+        formatted: properties.formatted || feature.formatted,
       });
     }
 
     return {
-      formattedAddress: properties.formatted,
-      lon: properties.lon,
-      lat: properties.lat,
-      postalCode: properties.postcode,
+      formattedAddress: properties.formatted ?? feature.formatted,
+      lon: properties.lon ?? feature.lon,
+      lat: properties.lat ?? feature.lat,
+      postalCode: properties.postcode ?? feature.postcode,
       confidenceStreetLevel: properties.confidence_street_level,
       confidenceCityLevel: properties.confidence_city_level,
-      streetName: properties.street,
-      houseNumber: properties.housenumber,
-      city: properties.city,
-      state: properties.state,
-      country: properties.country
+      streetName: properties.street ?? feature.street ?? '',
+      houseNumber: properties.housenumber ?? feature.housenumber ?? '',
+      city: properties.city ?? feature.city ?? '',
+      state: properties.state ?? feature.state ?? '',
+      country: properties.country ?? feature.country,
     };
   } catch (error) {
     console.error('Error validating address:', error);

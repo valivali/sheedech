@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { PersonalInfo, OnboardingData, Preferences } from '@/types/onboarding';
+import { PersonalInfo, OnboardingData, GuestPreferences, HostPreferences } from '@/types/onboarding';
 
 const API_BASE = '/api/onboarding';
 
@@ -7,7 +7,6 @@ export const useOnboardingData = () => {
   return useQuery<OnboardingData>({
     queryKey: ['onboarding'],
     queryFn: async () => {
-      console.log('fetching onboarding data');
       const response = await fetch(API_BASE);
       if (!response.ok) {
         if (response.status === 401) {
@@ -38,15 +37,31 @@ export const useSavePersonalInfo = () => {
   });
 };
 
-export const useSavePreferences = () => {
+export const useSaveGuestPreferences = () => {
   return useMutation({
-    mutationFn: async (data: Preferences) => {
-      const response = await fetch(`${API_BASE}/preferences`, {
+    mutationFn: async (data: GuestPreferences) => {
+      const response = await fetch(`${API_BASE}/guest-preferences`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
-      if (!response.ok) throw new Error('Failed to save preferences');
+      if (!response.ok) throw new Error('Failed to save guest preferences');
+      return response.json();
+    },
+    onSuccess: () => {
+    },
+  });
+};
+
+export const useSaveHostPreferences = () => {
+  return useMutation({
+    mutationFn: async (data: HostPreferences) => {
+      const response = await fetch(`${API_BASE}/host-preferences`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) throw new Error('Failed to save host preferences');
       return response.json();
     },
     onSuccess: () => {

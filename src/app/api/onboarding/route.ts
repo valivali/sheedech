@@ -4,7 +4,6 @@ import { prisma } from '@/db/prisma';
 
 export async function GET() {
   try {
-    console.log('fetching onboarding data from the server');
     const authUser = await getAuthUser();
     if (!authUser) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -24,7 +23,8 @@ export async function GET() {
           include: {
             familyMembers: true,
             pets: true,
-            preferences: true,
+            guestPreferences: true,
+            hostPreferences: true,
             addressDetails: true,
           },
         },
@@ -48,7 +48,8 @@ export async function GET() {
         familyMembers: user.onboarding.familyMembers,
         pets: user.onboarding.pets,
       },
-      preferences: user.onboarding.preferences || undefined,
+      guestPreferences: user.onboarding.guestPreferences || undefined,
+      hostPreferences: user.onboarding.hostPreferences || undefined,
       completedSteps: user.onboarding.completedSteps,
       isCompleted: user.onboarding.isCompleted,
     });

@@ -8,4 +8,5 @@ export interface CheckboxGroupProps {
   label?: string;
   error?: string;
   className?: string;
+  labelClassName?: string;
 }

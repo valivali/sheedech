@@ -23,13 +23,15 @@ export const RadioGroup = ({
   children,
   label,
   error,
-  className
+  className,
+  labelClassName
 }: RadioGroupProps) => {
   const classes = [styles.radioGroup, className].filter(Boolean).join(' ');
+  const labelClasses = [styles.radioGroupLabel, labelClassName].filter(Boolean).join(' ');
 
   return (
     <div className={classes}>
-      {label && <div className={styles.radioGroupLabel}>{label}</div>}
+      {label && <div className={labelClasses}>{label}</div>}
       <div className={styles.radioGroupItems}>
         {children}
       </div>

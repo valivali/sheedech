@@ -4,17 +4,17 @@ import { useState, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import { PersonalInfoStep } from './Steps/PersonalInfoStep';
-import { PreferencesStep } from './Steps/PreferencesStep';
-import { UnderConstructionStep } from './Steps/UnderConstructionStep';
+import { HostPreferencesStep } from './Steps/HostPreferencesStep';
+import { GuestPreferencesStep } from './Steps/GuestPreferencesStep';
 import { useOnboardingData } from '@/api/frontend/onboarding';
 import { Loading } from '@/components/UI/Loading';
 import { Text } from '@/components/UI/Text';
 import { ProgressBar } from '@/components/UI/ProgressBar';
 import styles from './OnboardingWizard.module.scss';
 
-export type WizardStep = 'personal-info' | 'preferences' | 'under-construction';
+export type WizardStep = 'personal-info' | 'host-preferences' | 'guest-preferences';
 
-const STEP_ORDER: WizardStep[] = ['personal-info', 'preferences', 'under-construction'];
+const STEP_ORDER: WizardStep[] = ['personal-info', 'host-preferences', 'guest-preferences'];
 
 export const OnboardingWizard = () => {
   const { data: onboardingData, isLoading, error } = useOnboardingData();
@@ -23,9 +23,7 @@ export const OnboardingWizard = () => {
   const [currentStep, setCurrentStep] = useState<WizardStep>('personal-info');
 
   useEffect(() => {
-    console.log(`onboardingData: ${onboardingData}`);
     if (onboardingData) {
-      console.log(`onboardingData: ${onboardingData}`);
       const urlStep = searchParams?.get('step') as WizardStep | null;
       
       if (urlStep && STEP_ORDER.includes(urlStep)) {
@@ -42,7 +40,7 @@ export const OnboardingWizard = () => {
   }, [onboardingData, searchParams]);
 
   const handleNextStep = () => {
-    queryClient.invalidateQueries({ queryKey: ['onboardingData'] });
+    queryClient.invalidateQueries({ queryKey: ['onboarding'] });
     const currentIndex = STEP_ORDER.indexOf(currentStep);
     if (currentIndex < STEP_ORDER.length - 1) {
       setCurrentStep(STEP_ORDER[currentIndex + 1]);
@@ -96,7 +94,7 @@ export const OnboardingWizard = () => {
                   className={`${styles.stepButton} ${isCurrent ? styles.stepButtonActive : ''} ${isCompleted ? styles.stepButtonCompleted : ''}`}
                   type="button"
                 >
-                  {index + 1}. {step === 'personal-info' ? 'Personal Info' : step === 'preferences' ? 'Preferences' : 'Step 3'}
+                  {index + 1}. {step === 'personal-info' ? 'Personal Info' : step === 'host-preferences' ? 'Host Preferences' : 'Guest Preferences'}
                 </button>
               );
             })}
@@ -111,15 +109,19 @@ export const OnboardingWizard = () => {
             initialData={onboardingData?.personalInfo}
           />
         )}
-        {currentStep === 'preferences' && (
-          <PreferencesStep 
+        {currentStep === 'host-preferences' && (
+          <HostPreferencesStep 
             onNext={handleNextStep}
             onBack={() => setCurrentStep('personal-info')}
-            initialData={onboardingData?.preferences}
+            initialData={onboardingData?.hostPreferences}
           />
         )}
-        {currentStep === 'under-construction' && (
-          <UnderConstructionStep onBack={() => setCurrentStep('preferences')} />
+        {currentStep === 'guest-preferences' && (
+          <GuestPreferencesStep 
+            onNext={handleNextStep}
+            onBack={() => setCurrentStep('host-preferences')}
+            initialData={onboardingData?.guestPreferences}
+          />
         )}
       </div>
     </div>

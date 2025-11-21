@@ -17,53 +17,72 @@ model User {
 }
 
 model UserOnboarding {
-  id              String           @id @default(cuid())
-  userId          String           @unique
-  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  firstName       String
-  lastName        String
-  addressDetails  Address?
-  phoneNumber     String
-  preferences     UserPreferences?
-  completedSteps  Int              @default(0)
-  isCompleted     Boolean          @default(false)
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-  familyMembers   FamilyMember[]
-  pets            Pet[]
+  id                String                @id @default(cuid())
+  userId            String                @unique
+  user              User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  firstName         String
+  lastName          String
+  addressDetails    Address?
+  phoneNumber       String
+  guestPreferences  UserGuestPreferences?
+  hostPreferences   UserHostPreferences?
+  completedSteps    Int                   @default(0)
+  isCompleted       Boolean               @default(false)
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+  familyMembers     FamilyMember[]
+  pets              Pet[]
 }
 
-model UserPreferences {
-  id                         String   @id @default(cuid())
-  onboardingId               String   @unique
+model UserGuestPreferences {
+  id                         String         @id @default(cuid())
+  onboardingId               String         @unique
   onboarding                 UserOnboarding @relation(fields: [onboardingId], references: [id], onDelete: Cascade)
 
-  // Food & Dining Preferences
   dietaryRestrictions        String[]
   dietaryRestrictionsOther   String?
   strongDislikes             String?
   alcoholStance              String?
-  smokingAsHost              String[]
-  smokingAsHostOther         String?
   smokingAsGuest             String[]
   smokingAsGuestOther        String?
   spiceLevel                 String?
-
-  // Vibe Preferences
-  eventTypes                 String[]
-  preferredAgeRange          String?
-  noiseLevel                 String?
-
-  // Social Comfort
   petsBotherYou              Boolean?
-  kidsOkay                   Boolean?
-
-  // Contribution Preferences
-  byobPotluckOkay            Boolean?
   contributionPreference     String?
 
-  createdAt                  DateTime @default(now())
-  updatedAt                  DateTime @updatedAt
+  createdAt                  DateTime       @default(now())
+  updatedAt                  DateTime       @updatedAt
+}
+
+model UserHostPreferences {
+  id                    String         @id @default(cuid())
+  onboardingId          String         @unique
+  onboarding            UserOnboarding @relation(fields: [onboardingId], references: [id], onDelete: Cascade)
+
+  smokingAsHost         String[]
+  smokingAsHostOther    String?
+  eventTypes            String[]
+  preferredAgeRange     String?
+  noiseLevel            String?
+  kidsOkay              Boolean?
+  byobPotluckOkay       Boolean?
+
+  propertyType          String?
+  neighborhoodNotes     String?
+  maxGuests             Int?
+  indoorOutdoorSeating  String?
+  diningTableSize       Int?
+  accessibility         String[]
+  parking               String[]
+  publicTransportInfo   String?
+  hasPets               Boolean?
+  hypoallergenicPet     Boolean?
+  petsFreeRoam          Boolean?
+  quietHours            String?
+  shoesOff              Boolean?
+  diningAreaPhotos      String[]
+
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
 }
 
 model FamilyMember {

@@ -24,7 +24,7 @@ export default clerkMiddleware(async (auth, request) => {
     const completedSteps = privateMetadata?.completedSteps ?? 0;
 
     if (!onboardingCompleted && !isOnboardingRoute(request)) {
-      const stepMap = ['personal-info', 'under-construction'];
+      const stepMap = ['personal-info', 'preferences', 'under-construction'];
       const stepIndex = Math.min(completedSteps, stepMap.length - 1);
       const redirectStep = stepMap[stepIndex];
       return NextResponse.redirect(new URL(`/onboarding?step=${redirectStep}`, request.url));

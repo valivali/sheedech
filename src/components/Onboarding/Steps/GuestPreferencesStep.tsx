@@ -7,15 +7,15 @@ import { Input } from '@/components/UI/Input';
 import { Button } from '@/components/UI/Button';
 import { CheckboxGroup, CheckboxItem } from '@/components/UI/CheckboxGroup';
 import { RadioGroup, RadioItem } from '@/components/UI/RadioGroup';
-import { useSavePreferences } from '@/api/frontend/onboarding';
-import { preferencesSchema, PreferencesFormData } from '@/validations/onboarding';
-import { Preferences } from '@/types/onboarding';
-import styles from './PreferencesStep.module.scss';
+import { useSaveGuestPreferences } from '@/api/frontend/onboarding';
+import { guestPreferencesSchema, GuestPreferencesFormData } from '@/validations/onboarding';
+import { GuestPreferences } from '@/types/onboarding';
+import styles from './GuestPreferencesStep.module.scss';
 
-interface PreferencesStepProps {
+interface GuestPreferencesStepProps {
   onNext: () => void;
   onBack: () => void;
-  initialData?: Preferences;
+  initialData?: GuestPreferences;
 }
 
 const DIETARY_RESTRICTIONS = [
@@ -34,13 +34,6 @@ const ALCOHOL_OPTIONS = [
   { value: 'open', label: 'Open but not necessary' },
 ];
 
-const SMOKING_HOST_OPTIONS = [
-  { value: 'no_mind', label: 'Not mind about smoking' },
-  { value: 'outside', label: 'You can smoke outside' },
-  { value: 'no_smoking', label: 'No smoking' },
-  { value: 'other', label: 'Other' },
-];
-
 const SMOKING_GUEST_OPTIONS = [
   { value: 'not_smoking', label: 'Not smoking' },
   { value: 'sometimes', label: 'Sometimes smoking but can hold back' },
@@ -55,57 +48,36 @@ const SPICE_LEVELS = [
   { value: 'hot', label: 'Hot' },
 ];
 
-const EVENT_TYPES = [
-  { value: 'casual_dinners', label: 'Casual dinners' },
-  { value: 'potluck', label: 'Potluck' },
-  { value: 'festive', label: 'Festive/holiday events' },
-  { value: 'small_intimate', label: 'Small intimate hangouts' },
-  { value: 'large_gatherings', label: 'Large gatherings' },
-];
-
-const NOISE_LEVELS = [
-  { value: 'chill', label: 'Chill & quiet' },
-  { value: 'lively', label: 'Lively social energy' },
-];
-
 const CONTRIBUTION_OPTIONS = [
   { value: 'bring_dish', label: 'Bring a dish' },
   { value: 'help_cook', label: 'Help cook' },
   { value: 'just_join', label: 'Just join' },
 ];
 
-export const PreferencesStep = ({ onNext, onBack, initialData }: PreferencesStepProps) => {
-  const { mutate: savePreferences, isPending } = useSavePreferences();
+export const GuestPreferencesStep = ({ onNext, onBack, initialData }: GuestPreferencesStepProps) => {
+  const { mutate: saveGuestPreferences, isPending } = useSaveGuestPreferences();
 
-  const { control, handleSubmit, watch, formState: { errors } } = useForm<PreferencesFormData>({
-    resolver: zodResolver(preferencesSchema),
+  const { control, handleSubmit, watch, formState: { errors } } = useForm<GuestPreferencesFormData>({
+    resolver: zodResolver(guestPreferencesSchema),
     mode: 'onChange',
     defaultValues: {
       dietaryRestrictions: initialData?.dietaryRestrictions || [],
       dietaryRestrictionsOther: initialData?.dietaryRestrictionsOther || '',
       strongDislikes: initialData?.strongDislikes || '',
       alcoholStance: initialData?.alcoholStance || '',
-      smokingAsHost: initialData?.smokingAsHost || [],
-      smokingAsHostOther: initialData?.smokingAsHostOther || '',
       smokingAsGuest: initialData?.smokingAsGuest || [],
       smokingAsGuestOther: initialData?.smokingAsGuestOther || '',
       spiceLevel: initialData?.spiceLevel || '',
-      eventTypes: initialData?.eventTypes || [],
-      preferredAgeRange: initialData?.preferredAgeRange || '',
-      noiseLevel: initialData?.noiseLevel || '',
       petsBotherYou: initialData?.petsBotherYou,
-      kidsOkay: initialData?.kidsOkay,
-      byobPotluckOkay: initialData?.byobPotluckOkay,
       contributionPreference: initialData?.contributionPreference || '',
     },
   });
 
   const dietaryRestrictions = watch('dietaryRestrictions');
-  const smokingAsHost = watch('smokingAsHost');
   const smokingAsGuest = watch('smokingAsGuest');
 
   const handleCheckboxChange = (
-    fieldName: 'dietaryRestrictions' | 'smokingAsHost' | 'smokingAsGuest' | 'eventTypes',
+    fieldName: 'dietaryRestrictions' | 'smokingAsGuest',
     value: string,
     currentValues: string[]
   ) => {
@@ -114,27 +86,27 @@ export const PreferencesStep = ({ onNext, onBack, initialData }: PreferencesStep
       : [...currentValues, value];
   };
 
-  const onSubmit = (data: PreferencesFormData) => {
-    savePreferences(data, {
+  const onSubmit = (data: GuestPreferencesFormData) => {
+    saveGuestPreferences(data, {
       onSuccess: () => {
         onNext();
       },
       onError: (error) => {
-        console.error('Failed to save preferences:', error);
+        console.error('Failed to save guest preferences:', error);
       },
     });
   };
 
   return (
     <div className={styles.container}>
-      <Title level={2}>Preferences</Title>
+      <Title level={2}>Guest Preferences</Title>
       <Text className={styles.subtitle}>
-        Help us match you better by sharing your preferences. All fields are optional.
+        Tell us about your preferences when attending events. All fields are optional.
       </Text>
 
       <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
         <div className={styles.section}>
-          <h3 className={styles.sectionHeader}>Food & Dining Preferences</h3>
+          <h3 className={styles.sectionHeader}>Dietary Preferences</h3>
 
           <Controller
             name="dietaryRestrictions"
@@ -187,6 +159,29 @@ export const PreferencesStep = ({ onNext, onBack, initialData }: PreferencesStep
           />
 
           <Controller
+            name="spiceLevel"
+            control={control}
+            render={({ field }) => (
+              <RadioGroup label="Spice level comfort" labelClassName={styles.questionLabel}>
+                {SPICE_LEVELS.map(option => (
+                  <RadioItem
+                    key={option.value}
+                    {...field}
+                    value={option.value}
+                    checked={field.value === option.value}
+                  >
+                    {option.label}
+                  </RadioItem>
+                ))}
+              </RadioGroup>
+            )}
+          />
+        </div>
+
+        <div className={styles.section}>
+          <h3 className={styles.sectionHeader}>Alcohol & Smoking</h3>
+
+          <Controller
             name="alcoholStance"
             control={control}
             render={({ field }) => (
@@ -202,42 +197,6 @@ export const PreferencesStep = ({ onNext, onBack, initialData }: PreferencesStep
                   </RadioItem>
                 ))}
               </RadioGroup>
-            )}
-          />
-
-          <Controller
-            name="smokingAsHost"
-            control={control}
-            render={({ field }) => (
-              <CheckboxGroup label="Smoking preferences (as host)" labelClassName={styles.questionLabel}>
-                {SMOKING_HOST_OPTIONS.map(option => (
-                  <div key={option.value}>
-                    <CheckboxItem
-                      checked={field.value.includes(option.value)}
-                      onChange={() => {
-                        field.onChange(handleCheckboxChange('smokingAsHost', option.value, field.value));
-                      }}
-                    >
-                      {option.label}
-                    </CheckboxItem>
-                    {option.value === 'other' && smokingAsHost.includes('other') && (
-                      <Controller
-                        name="smokingAsHostOther"
-                        control={control}
-                        render={({ field: otherField }) => (
-                          <Input
-                            {...otherField}
-                            placeholder="Please specify"
-                            error={errors.smokingAsHostOther?.message}
-                            maxLength={512}
-                            className={styles.otherInput}
-                          />
-                        )}
-                      />
-                    )}
-                  </div>
-                ))}
-              </CheckboxGroup>
             )}
           />
 
@@ -276,82 +235,6 @@ export const PreferencesStep = ({ onNext, onBack, initialData }: PreferencesStep
               </CheckboxGroup>
             )}
           />
-
-          <Controller
-            name="spiceLevel"
-            control={control}
-            render={({ field }) => (
-              <RadioGroup label="Spice level comfort" labelClassName={styles.questionLabel}>
-                {SPICE_LEVELS.map(option => (
-                  <RadioItem
-                    key={option.value}
-                    {...field}
-                    value={option.value}
-                    checked={field.value === option.value}
-                  >
-                    {option.label}
-                  </RadioItem>
-                ))}
-              </RadioGroup>
-            )}
-          />
-        </div>
-
-        <div className={styles.section}>
-          <h3 className={styles.sectionHeader}>Vibe Preferences</h3>
-
-          <Controller
-            name="eventTypes"
-            control={control}
-            render={({ field }) => (
-              <CheckboxGroup label="Type of events we enjoy" labelClassName={styles.questionLabel}>
-                {EVENT_TYPES.map(option => (
-                  <CheckboxItem
-                    key={option.value}
-                    checked={field.value.includes(option.value)}
-                    onChange={() => {
-                      field.onChange(handleCheckboxChange('eventTypes', option.value, field.value));
-                    }}
-                  >
-                    {option.label}
-                  </CheckboxItem>
-                ))}
-              </CheckboxGroup>
-            )}
-          />
-
-          <Controller
-            name="preferredAgeRange"
-            control={control}
-            render={({ field }) => (
-              <Input
-                {...field}
-                label="Preferred age range (optional)"
-                placeholder='e.g., "25-35", "30+"'
-                error={errors.preferredAgeRange?.message}
-                maxLength={512}
-              />
-            )}
-          />
-
-          <Controller
-            name="noiseLevel"
-            control={control}
-            render={({ field }) => (
-              <RadioGroup label="Preferred noise level" labelClassName={styles.questionLabel}>
-                {NOISE_LEVELS.map(option => (
-                  <RadioItem
-                    key={option.value}
-                    {...field}
-                    value={option.value}
-                    checked={field.value === option.value}
-                  >
-                    {option.label}
-                  </RadioItem>
-                ))}
-              </RadioGroup>
-            )}
-          />
         </div>
 
         <div className={styles.section}>
@@ -379,56 +262,10 @@ export const PreferencesStep = ({ onNext, onBack, initialData }: PreferencesStep
               </RadioGroup>
             )}
           />
-
-          <Controller
-            name="kidsOkay"
-            control={control}
-            render={({ field: { value, onChange } }) => (
-              <RadioGroup label="Are kids okay in events?" labelClassName={styles.questionLabel}>
-                <RadioItem
-                  key="yes"
-                  checked={value === true}
-                  onChange={() => onChange(true)}
-                >
-                  Yes
-                </RadioItem>
-                <RadioItem
-                  key="no"
-                  checked={value === false}
-                  onChange={() => onChange(false)}
-                >
-                  No
-                </RadioItem>
-              </RadioGroup>
-            )}
-          />
         </div>
 
         <div className={styles.section}>
           <h3 className={styles.sectionHeader}>Contribution Preferences</h3>
-
-          <Controller
-            name="byobPotluckOkay"
-            control={control}
-            render={({ field: { value, onChange } }) => (
-              <RadioGroup label="Are you okay with BYOB / potluck format?" labelClassName={styles.questionLabel}>
-                <RadioItem
-                  key="yes"
-                  checked={value === true}
-                  onChange={() => onChange(true)}
-                >
-                  Yes
-                </RadioItem>
-                <RadioItem
-                  key="no"
-                  checked={value === false}
-                  onChange={() => onChange(false)}
-                >
-                  No
-                </RadioItem>
-              </RadioGroup>
-            )}
-          />
 
           <Controller
             name="contributionPreference"
@@ -464,7 +301,7 @@ export const PreferencesStep = ({ onNext, onBack, initialData }: PreferencesStep
             disabled={isPending}
             size="md"
           >
-            {isPending ? 'Saving...' : 'Next Step'}
+            {isPending ? 'Saving...' : 'Complete Onboarding'}
           </Button>
         </div>
       </form>

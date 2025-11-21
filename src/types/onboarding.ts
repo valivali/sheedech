@@ -36,28 +36,46 @@ export interface PersonalInfo {
   pets: Pet[];
 }
 
-export interface Preferences {
+export interface GuestPreferences {
   dietaryRestrictions: string[];
   dietaryRestrictionsOther?: string;
   strongDislikes?: string;
   alcoholStance?: string;
-  smokingAsHost: string[];
-  smokingAsHostOther?: string;
   smokingAsGuest: string[];
   smokingAsGuestOther?: string;
   spiceLevel?: string;
+  petsBotherYou?: boolean;
+  contributionPreference?: string;
+}
+
+export interface HostPreferences {
+  smokingAsHost: string[];
+  smokingAsHostOther?: string;
   eventTypes: string[];
   preferredAgeRange?: string;
   noiseLevel?: string;
-  petsBotherYou?: boolean;
   kidsOkay?: boolean;
   byobPotluckOkay?: boolean;
-  contributionPreference?: string;
+  propertyType?: string;
+  neighborhoodNotes?: string;
+  maxGuests?: number;
+  indoorOutdoorSeating?: string;
+  diningTableSize?: number;
+  accessibility: string[];
+  parking: string[];
+  publicTransportInfo?: string;
+  hasPets?: boolean;
+  hypoallergenicPet?: boolean;
+  petsFreeRoam?: boolean;
+  quietHours?: string;
+  shoesOff?: boolean;
+  diningAreaPhotos: string[];
 }
 
 export interface OnboardingData {
   personalInfo?: PersonalInfo;
-  preferences?: Preferences;
+  guestPreferences?: GuestPreferences;
+  hostPreferences?: HostPreferences;
   completedSteps: number;
   isCompleted: boolean;
 }
