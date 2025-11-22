@@ -34,6 +34,7 @@ export async function POST(request: NextRequest) {
       spiceLevel: validatedData.spiceLevel || null,
       petsBotherYou: validatedData.petsBotherYou,
       contributionPreference: validatedData.contributionPreference || null,
+      additionalNotes: validatedData.additionalNotes?.trim() || null,
     };
 
     const updatedOnboarding = await prisma.userOnboarding.update({

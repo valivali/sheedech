@@ -10,6 +10,8 @@
   display: flex;
   justify-content: center;
   padding: 1rem;
+  height: calc(100vh - 71px);
+  margin-top: 71px;
 
   @media (min-width: 768px) {
     padding: 2rem;
@@ -19,10 +21,5 @@
 .container {
   width: 100%;
   max-width: 800px;
-  padding: 1.5rem 0;
-
-  @media (min-width: 768px) {
-    padding: 2rem 0;
-  }
 }
 

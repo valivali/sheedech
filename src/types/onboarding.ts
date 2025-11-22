@@ -46,6 +46,7 @@ export interface GuestPreferences {
   spiceLevel?: string;
   petsBotherYou?: boolean;
   contributionPreference?: string;
+  additionalNotes?: string;
 }
 
 export interface HostPreferences {
@@ -70,6 +71,7 @@ export interface HostPreferences {
   quietHours?: string;
   shoesOff?: boolean;
   diningAreaPhotos: string[];
+  additionalNotes?: string;
 }
 
 export interface OnboardingData {

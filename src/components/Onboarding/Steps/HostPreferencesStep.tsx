@@ -3,6 +3,7 @@
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Title, Text } from '@/components/UI/Text';
+import { Textarea } from '@/components/UI/Textarea';
 import { Input } from '@/components/UI/Input';
 import { Button } from '@/components/UI/Button';
 import { CheckboxGroup, CheckboxItem } from '@/components/UI/CheckboxGroup';
@@ -83,6 +84,7 @@ export const HostPreferencesStep = ({ onNext, onBack, initialData }: HostPrefere
       quietHours: initialData?.quietHours || '',
       shoesOff: initialData?.shoesOff,
       diningAreaPhotos: initialData?.diningAreaPhotos || [],
+      additionalNotes: initialData?.additionalNotes || '',
     },
   });
 
@@ -161,7 +163,7 @@ export const HostPreferencesStep = ({ onNext, onBack, initialData }: HostPrefere
             name="eventTypes"
             control={control}
             render={({ field }) => (
-              <CheckboxGroup label="Type of events you host" labelClassName={styles.questionLabel}>
+              <CheckboxGroup label="Type of events you host *" labelClassName={styles.questionLabel}>
                 {EVENT_TYPES.map(option => (
                   <CheckboxItem
                     key={option.value}
@@ -556,6 +558,26 @@ export const HostPreferencesStep = ({ onNext, onBack, initialData }: HostPrefere
                 onChange={(files) => {
                   onChange(files.map(f => f.name));
                 }}
+              />
+            )}
+          />
+        </div>
+
+        <div className={styles.section}>
+          <h3 className={styles.sectionHeader}>Additional Notes</h3>
+          <Text className={styles.sectionDescription}>
+            Any additional information you'd like to share about your hosting preferences.
+          </Text>
+
+          <Controller
+            name="additionalNotes"
+            control={control}
+            render={({ field }) => (
+              <Textarea
+                {...field}
+                placeholder="e.g., We are huge winter olympics fans, etc."
+                maxLength={512}
+                helperText="Maximum 512 characters"
               />
             )}
           />

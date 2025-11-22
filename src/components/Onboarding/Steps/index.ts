@@ -1,6 +1,6 @@
 export { PersonalInfoStep } from './PersonalInfoStep';
 export { HostPreferencesStep } from './HostPreferencesStep';
 export { GuestPreferencesStep } from './GuestPreferencesStep';
-export { PreferencesStep } from './PreferencesStep';
+export { OnboardingCompleteStep } from './OnboardingCompleteStep';
 export { UnderConstructionStep } from './UnderConstructionStep';
 

@@ -6,15 +6,16 @@ import { useSearchParams } from 'next/navigation';
 import { PersonalInfoStep } from './Steps/PersonalInfoStep';
 import { HostPreferencesStep } from './Steps/HostPreferencesStep';
 import { GuestPreferencesStep } from './Steps/GuestPreferencesStep';
+import { OnboardingCompleteStep } from './Steps/OnboardingCompleteStep';
 import { useOnboardingData } from '@/api/frontend/onboarding';
 import { Loading } from '@/components/UI/Loading';
 import { Text } from '@/components/UI/Text';
 import { ProgressBar } from '@/components/UI/ProgressBar';
 import styles from './OnboardingWizard.module.scss';
 
-export type WizardStep = 'personal-info' | 'host-preferences' | 'guest-preferences';
+export type WizardStep = 'personal-info' | 'host-preferences' | 'guest-preferences' | 'onboarding-complete';
 
-const STEP_ORDER: WizardStep[] = ['personal-info', 'host-preferences', 'guest-preferences'];
+const STEP_ORDER: WizardStep[] = ['personal-info', 'host-preferences', 'guest-preferences', 'onboarding-complete'];
 
 export const OnboardingWizard = () => {
   const { data: onboardingData, isLoading, error } = useOnboardingData();
@@ -25,7 +26,7 @@ export const OnboardingWizard = () => {
   useEffect(() => {
     if (onboardingData) {
       const urlStep = searchParams?.get('step') as WizardStep | null;
-      
+
       if (urlStep && STEP_ORDER.includes(urlStep)) {
         const urlStepIndex = STEP_ORDER.indexOf(urlStep);
         if (urlStepIndex <= onboardingData.completedSteps) {
@@ -33,16 +34,22 @@ export const OnboardingWizard = () => {
           return;
         }
       }
-      
+
       const stepIndex = Math.min(onboardingData.completedSteps, STEP_ORDER.length - 1);
       setCurrentStep(STEP_ORDER[stepIndex]);
     }
   }, [onboardingData, searchParams]);
 
+  // Scroll to top when step changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentStep]);
+
   const handleNextStep = () => {
     queryClient.invalidateQueries({ queryKey: ['onboarding'] });
     const currentIndex = STEP_ORDER.indexOf(currentStep);
-    if (currentIndex < STEP_ORDER.length - 1) {
+    // Don't advance from the completion step
+    if (currentIndex < STEP_ORDER.length - 1 && currentStep !== 'onboarding-complete') {
       setCurrentStep(STEP_ORDER[currentIndex + 1]);
     }
   };
@@ -94,7 +101,7 @@ export const OnboardingWizard = () => {
                   className={`${styles.stepButton} ${isCurrent ? styles.stepButtonActive : ''} ${isCompleted ? styles.stepButtonCompleted : ''}`}
                   type="button"
                 >
-                  {index + 1}. {step === 'personal-info' ? 'Personal Info' : step === 'host-preferences' ? 'Host Preferences' : 'Guest Preferences'}
+                  {index + 1}. {step === 'personal-info' ? 'Personal Info' : step === 'host-preferences' ? 'Host Preferences' : step === 'guest-preferences' ? 'Guest Preferences' : 'Complete'}
                 </button>
               );
             })}
@@ -117,11 +124,14 @@ export const OnboardingWizard = () => {
           />
         )}
         {currentStep === 'guest-preferences' && (
-          <GuestPreferencesStep 
+          <GuestPreferencesStep
             onNext={handleNextStep}
             onBack={() => setCurrentStep('host-preferences')}
             initialData={onboardingData?.guestPreferences}
           />
+        )}
+        {currentStep === 'onboarding-complete' && (
+          <OnboardingCompleteStep />
         )}
       </div>
     </div>

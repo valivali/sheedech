@@ -46,6 +46,7 @@ export async function POST(request: NextRequest) {
       quietHours: validatedData.quietHours?.trim() || null,
       shoesOff: validatedData.shoesOff,
       diningAreaPhotos: validatedData.diningAreaPhotos || [],
+      additionalNotes: validatedData.additionalNotes?.trim() || null,
     };
 
     const updatedOnboarding = await prisma.userOnboarding.update({

@@ -40,12 +40,13 @@ export const guestPreferencesSchema = z.object({
   spiceLevel: z.string().optional(),
   petsBotherYou: z.boolean().optional(),
   contributionPreference: z.string().optional(),
+  additionalNotes: textFieldSchema,
 });
 
 export const hostPreferencesSchema = z.object({
   smokingAsHost: z.array(z.string()),
   smokingAsHostOther: textFieldSchema,
-  eventTypes: z.array(z.string()),
+  eventTypes: z.array(z.string()).min(1, 'Please select at least one event type'),
   preferredAgeRange: textFieldSchema,
   noiseLevel: z.string().optional(),
   kidsOkay: z.boolean().optional(),
@@ -64,6 +65,7 @@ export const hostPreferencesSchema = z.object({
   quietHours: textFieldSchema,
   shoesOff: z.boolean().optional(),
   diningAreaPhotos: z.array(z.string()),
+  additionalNotes: textFieldSchema,
 });
 
 export type GuestPreferencesFormData = z.infer<typeof guestPreferencesSchema>;

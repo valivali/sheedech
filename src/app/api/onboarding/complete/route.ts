@@ -23,7 +23,7 @@ export async function POST() {
       where: { userId: user.id },
       data: {
         isCompleted: true,
-        completedSteps: 2,
+        completedSteps: 3,
       },
     });
 
@@ -31,11 +31,20 @@ export async function POST() {
     await client.users.updateUserMetadata(authUser.userId, {
       privateMetadata: {
         onboardingCompleted: true,
-        completedSteps: 2,
+        completedSteps: 3,
       },
     });
 
-    return NextResponse.json(onboarding);
+    // Set cookie for immediate redirect optimization (middleware will check this first)
+    const response = NextResponse.json(onboarding);
+    response.cookies.set('onboarding-just-completed', 'true', {
+      maxAge: 10, // 10 seconds - just enough for the redirect
+      httpOnly: true,
+      sameSite: 'lax',
+      path: '/',
+    });
+
+    return response;
   } catch (error) {
     console.error('Error completing onboarding:', error);
     return NextResponse.json(

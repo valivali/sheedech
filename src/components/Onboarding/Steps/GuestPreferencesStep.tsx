@@ -10,6 +10,7 @@ import { RadioGroup, RadioItem } from '@/components/UI/RadioGroup';
 import { useSaveGuestPreferences } from '@/api/frontend/onboarding';
 import { guestPreferencesSchema, GuestPreferencesFormData } from '@/validations/onboarding';
 import { GuestPreferences } from '@/types/onboarding';
+import { Textarea } from '@/components/UI/Textarea';
 import styles from './GuestPreferencesStep.module.scss';
 
 interface GuestPreferencesStepProps {
@@ -46,6 +47,7 @@ const SPICE_LEVELS = [
   { value: 'mild', label: 'Mild' },
   { value: 'medium', label: 'Medium' },
   { value: 'hot', label: 'Hot' },
+  { value: 'not_spicy', label: 'Not spicy' },
 ];
 
 const CONTRIBUTION_OPTIONS = [
@@ -70,6 +72,7 @@ export const GuestPreferencesStep = ({ onNext, onBack, initialData }: GuestPrefe
       spiceLevel: initialData?.spiceLevel || '',
       petsBotherYou: initialData?.petsBotherYou,
       contributionPreference: initialData?.contributionPreference || '',
+      additionalNotes: initialData?.additionalNotes || '',
     },
   });
 
@@ -287,6 +290,26 @@ export const GuestPreferencesStep = ({ onNext, onBack, initialData }: GuestPrefe
           />
         </div>
 
+        <div className={styles.section}>
+          <h3 className={styles.sectionHeader}>Additional Notes</h3>
+          <Text className={styles.sectionDescription}>
+            Any additional information you'd like to share about your preferences as a guest.
+          </Text>
+
+          <Controller
+            name="additionalNotes"
+            control={control}
+            render={({ field }) => (
+              <Textarea
+                {...field}
+                placeholder="e.g., I love trying new cuisines, I'm allergic to certain foods, etc."
+                maxLength={512}
+                helperText="Maximum 512 characters"
+              />
+            )}
+          />
+        </div>
+
         <div className={styles.actions}>
           <Button
             type="button"
@@ -301,7 +324,7 @@ export const GuestPreferencesStep = ({ onNext, onBack, initialData }: GuestPrefe
             disabled={isPending}
             size="md"
           >
-            {isPending ? 'Saving...' : 'Complete Onboarding'}
+            {isPending ? 'Saving...' : 'Next Step'}
           </Button>
         </div>
       </form>
