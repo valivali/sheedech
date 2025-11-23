@@ -1,4 +1,4 @@
-import { CheckboxGroupProps, CheckboxItemProps } from './CheckboxGroup.types';
+import { CheckboxGroupProps, CheckboxItemProps, ControlledCheckboxGroupProps } from './CheckboxGroup.types';
 import styles from './CheckboxGroup.module.scss';
 
 export const CheckboxItem = ({
@@ -37,5 +37,36 @@ export const CheckboxGroup = ({
       </div>
       {error && <span className={styles.checkboxGroupError}>{error}</span>}
     </div>
+  );
+};
+
+export const ControlledCheckboxGroup = ({
+  options,
+  value,
+  onChange,
+  label,
+  error,
+  className,
+  labelClassName
+}: ControlledCheckboxGroupProps) => {
+  const handleCheckboxChange = (optionValue: string) => {
+    const newValue = value.includes(optionValue)
+      ? value.filter(v => v !== optionValue)
+      : [...value, optionValue];
+    onChange(newValue);
+  };
+
+  return (
+    <CheckboxGroup label={label} error={error} className={className} labelClassName={labelClassName}>
+      {options.map(option => (
+        <CheckboxItem
+          key={option.value}
+          checked={value.includes(option.value)}
+          onChange={() => handleCheckboxChange(option.value)}
+        >
+          {option.label}
+        </CheckboxItem>
+      ))}
+    </CheckboxGroup>
   );
 };

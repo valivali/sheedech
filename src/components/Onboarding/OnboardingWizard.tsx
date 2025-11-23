@@ -1,17 +1,50 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback, memo } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
-import { PersonalInfoStep } from './Steps/PersonalInfoStep';
-import { HostPreferencesStep } from './Steps/HostPreferencesStep';
-import { GuestPreferencesStep } from './Steps/GuestPreferencesStep';
-import { OnboardingCompleteStep } from './Steps/OnboardingCompleteStep';
+import { PersonalInfoStep } from './Steps/PersonalInfo/PersonalInfoStep';
+import { HostPreferencesStep } from './Steps/HostPreferences/HostPreferencesStep';
+import { GuestPreferencesStep } from './Steps/GuestPreferences/GuestPreferencesStep';
+import { OnboardingCompleteStep } from './Steps/OnboardingComplete/OnboardingCompleteStep';
 import { useOnboardingData } from '@/api/frontend/onboarding';
 import { Loading } from '@/components/UI/Loading';
 import { Text } from '@/components/UI/Text';
 import { ProgressBar } from '@/components/UI/ProgressBar';
 import styles from './OnboardingWizard.module.scss';
+import { match } from 'ts-pattern';
+
+const StepNavigation = memo(({
+  currentStep,
+  completedSteps,
+  onGoToStep
+}: {
+  currentStep: WizardStep;
+  completedSteps: number;
+  onGoToStep: (step: WizardStep) => void;
+}) => (
+  <div className={styles.stepNavigation}>
+    {STEP_ORDER.map((step, index) => {
+      const isCompleted = index < completedSteps;
+      const isCurrent = step === currentStep;
+      const isAccessible = index <= completedSteps;
+
+      return (
+        <button
+          key={step}
+          onClick={() => onGoToStep(step)}
+          disabled={!isAccessible}
+          className={`${styles.stepButton} ${isCurrent ? styles.stepButtonActive : ''} ${isCompleted ? styles.stepButtonCompleted : ''}`}
+          type="button"
+        >
+          {index + 1}. {step === 'personal-info' ? 'Personal Info' : step === 'host-preferences' ? 'Host Preferences' : step === 'guest-preferences' ? 'Guest Preferences' : 'Complete'}
+        </button>
+      );
+    })}
+  </div>
+));
+
+StepNavigation.displayName = 'StepNavigation';
 
 export type WizardStep = 'personal-info' | 'host-preferences' | 'guest-preferences' | 'onboarding-complete';
 
@@ -24,20 +57,22 @@ export const OnboardingWizard = () => {
   const [currentStep, setCurrentStep] = useState<WizardStep>('personal-info');
 
   useEffect(() => {
-    if (onboardingData) {
-      const urlStep = searchParams?.get('step') as WizardStep | null;
+    if (!onboardingData) return;
 
-      if (urlStep && STEP_ORDER.includes(urlStep)) {
-        const urlStepIndex = STEP_ORDER.indexOf(urlStep);
-        if (urlStepIndex <= onboardingData.completedSteps) {
-          setCurrentStep(urlStep);
-          return;
-        }
+    const urlStep = searchParams?.get('step') as WizardStep | null;
+
+    // If URL has a valid step and user has completed up to that step, use it
+    if (urlStep && STEP_ORDER.includes(urlStep)) {
+      const urlStepIndex = STEP_ORDER.indexOf(urlStep);
+      if (urlStepIndex <= onboardingData.completedSteps) {
+        setCurrentStep(urlStep);
+        return;
       }
-
-      const stepIndex = Math.min(onboardingData.completedSteps, STEP_ORDER.length - 1);
-      setCurrentStep(STEP_ORDER[stepIndex]);
     }
+
+    // Otherwise, go to the furthest completed step
+    const stepIndex = Math.min(onboardingData.completedSteps, STEP_ORDER.length - 1);
+    setCurrentStep(STEP_ORDER[stepIndex]);
   }, [onboardingData, searchParams]);
 
   // Scroll to top when step changes
@@ -45,23 +80,23 @@ export const OnboardingWizard = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentStep]);
 
-  const handleNextStep = () => {
+  const handleNextStep = useCallback(() => {
     queryClient.invalidateQueries({ queryKey: ['onboarding'] });
     const currentIndex = STEP_ORDER.indexOf(currentStep);
     // Don't advance from the completion step
     if (currentIndex < STEP_ORDER.length - 1 && currentStep !== 'onboarding-complete') {
       setCurrentStep(STEP_ORDER[currentIndex + 1]);
     }
-  };
+  }, [queryClient, currentStep]);
 
-  const handleGoToStep = (step: WizardStep) => {
+  const handleGoToStep = useCallback((step: WizardStep) => {
     const targetIndex = STEP_ORDER.indexOf(step);
     const completedSteps = onboardingData?.completedSteps || 0;
-    
+
     if (targetIndex <= completedSteps) {
       setCurrentStep(step);
     }
-  };
+  }, [onboardingData?.completedSteps]);
 
   const currentStepIndex = STEP_ORDER.indexOf(currentStep);
   const progressPercentage = ((currentStepIndex + 1) / STEP_ORDER.length) * 100;
@@ -87,52 +122,42 @@ export const OnboardingWizard = () => {
         </div>
 
         {onboardingData && onboardingData.completedSteps > 0 && (
-          <div className={styles.stepNavigation}>
-            {STEP_ORDER.map((step, index) => {
-              const isCompleted = index < (onboardingData.completedSteps || 0);
-              const isCurrent = step === currentStep;
-              const isAccessible = index <= (onboardingData.completedSteps || 0);
-              
-              return (
-                <button
-                  key={step}
-                  onClick={() => handleGoToStep(step)}
-                  disabled={!isAccessible}
-                  className={`${styles.stepButton} ${isCurrent ? styles.stepButtonActive : ''} ${isCompleted ? styles.stepButtonCompleted : ''}`}
-                  type="button"
-                >
-                  {index + 1}. {step === 'personal-info' ? 'Personal Info' : step === 'host-preferences' ? 'Host Preferences' : step === 'guest-preferences' ? 'Guest Preferences' : 'Complete'}
-                </button>
-              );
-            })}
-          </div>
+          <StepNavigation
+            currentStep={currentStep}
+            completedSteps={onboardingData.completedSteps}
+            onGoToStep={handleGoToStep}
+          />
         )}
       </div>
 
       <div className={styles.wizardContent}>
-        {currentStep === 'personal-info' && (
-          <PersonalInfoStep 
-            onNext={handleNextStep} 
-            initialData={onboardingData?.personalInfo}
-          />
-        )}
-        {currentStep === 'host-preferences' && (
-          <HostPreferencesStep 
-            onNext={handleNextStep}
-            onBack={() => setCurrentStep('personal-info')}
-            initialData={onboardingData?.hostPreferences}
-          />
-        )}
-        {currentStep === 'guest-preferences' && (
-          <GuestPreferencesStep
-            onNext={handleNextStep}
-            onBack={() => setCurrentStep('host-preferences')}
-            initialData={onboardingData?.guestPreferences}
-          />
-        )}
-        {currentStep === 'onboarding-complete' && (
-          <OnboardingCompleteStep />
-        )}
+        {
+          match(currentStep)
+          .with('personal-info', () => (
+            <PersonalInfoStep 
+              onNext={handleNextStep} 
+              initialData={onboardingData?.personalInfo}
+            />
+          ))
+          .with('host-preferences', () => (
+            <HostPreferencesStep 
+              onNext={handleNextStep}
+              onBack={() => setCurrentStep('personal-info')}
+              initialData={onboardingData?.hostPreferences}
+            />
+          ))
+          .with('guest-preferences', () => (
+            <GuestPreferencesStep 
+              onNext={handleNextStep}
+              onBack={() => setCurrentStep('host-preferences')}
+              initialData={onboardingData?.guestPreferences}
+            />
+          ))
+          .with('onboarding-complete', () => (
+            <OnboardingCompleteStep />
+          ))
+          .exhaustive()
+        }
       </div>
     </div>
   );
