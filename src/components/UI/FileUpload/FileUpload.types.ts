@@ -3,7 +3,8 @@ export interface FileUploadProps {
   accept?: string;
   multiple?: boolean;
   maxFiles?: number;
-  onChange?: (files: File[]) => void;
+  value?: string[];
+  onChange?: (urls: string[]) => void;
   error?: string;
   className?: string;
 }

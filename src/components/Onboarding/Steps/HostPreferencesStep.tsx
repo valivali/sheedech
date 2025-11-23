@@ -549,14 +549,15 @@ export const HostPreferencesStep = ({ onNext, onBack, initialData }: HostPrefere
           <Controller
             name="diningAreaPhotos"
             control={control}
-            render={({ field: { onChange } }) => (
+            render={({ field: { value, onChange } }) => (
               <FileUpload
                 label="Dining area photos"
                 multiple
                 maxFiles={2}
                 accept="image/*"
-                onChange={(files) => {
-                  onChange(files.map(f => f.name));
+                value={value}
+                onChange={(urls) => {
+                  onChange(urls);
                 }}
               />
             )}

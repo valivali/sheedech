@@ -101,7 +101,7 @@ export const PersonalInfoStep = ({ onNext, initialData }: PersonalInfoStepProps)
     resolver: zodResolver(personalInfoSchema),
     mode: 'onChange',
     defaultValues: {
-      firstName: '',
+      firstName: "",
       lastName: '',
       address: '',
       phoneNumber: '',

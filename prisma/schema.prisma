@@ -14,6 +14,8 @@ model User {
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
   onboarding      UserOnboarding?
+  photos          UserPhoto[]
+  diningImages    DiningImage[]
 }
 
 model UserOnboarding {
@@ -130,5 +132,38 @@ model Address {
 
   createdAt             DateTime       @default(now())
   updatedAt             DateTime       @updatedAt
+}
+
+model UserPhoto {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  url         String
+  width       Int?
+  height      Int?
+  cropX       Float?
+  cropY       Float?
+  cropWidth   Float?
+  cropHeight  Float?
+  order       Int
+  caption     String?
+  createdAt   DateTime  @default(now())
+}
+
+model DiningImage {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  url         String
+  width       Int?
+  height      Int?
+  cropX       Float?
+  cropY       Float?
+  cropWidth   Float?
+  cropHeight  Float?
+  order       Int
+  caption     String?
+  isPrimary   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
 }
 

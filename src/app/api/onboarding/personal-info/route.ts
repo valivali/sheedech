@@ -152,9 +152,11 @@ export async function POST(request: NextRequest) {
             kind: pet.kind,
           })),
         },
-        addressDetails: addressValidation ? {
-          create: addressValidation,
-        } : undefined,
+        addressDetails: addressValidation
+          ? {
+              create: addressValidation
+            }
+          : undefined
       },
       include: {
         familyMembers: true,
