@@ -7,8 +7,10 @@ import { Footer } from "@/components/Footer";
 import { Title, Subtitle, Blockquote, Text } from "@/components/UI/Text";
 import { Button } from "@/components/UI/Button";
 import { Loading } from "@/components/UI/Loading";
+import { EventCardCarousel } from "@/components/EventCard";
 import { useRouter } from "next/navigation";
 import { useUser, SignUpButton } from "@/lib/auth";
+import { useEvents } from "@/api/frontend/events";
 
 function HeroContent() {
   const router = useRouter();
@@ -48,6 +50,24 @@ function CTAContent() {
   );
 }
 
+function EventsCarousel() {
+  const { data: events, isLoading, error } = useEvents(6);
+
+  if (isLoading) {
+    return <Loading variant="pulse" size="md" text="Loading events..." />;
+  }
+
+  if (error || !events || events.length === 0) {
+    return (
+      <Text variant="div" className={styles.noEvents}>
+        No upcoming events at the moment. Check back soon!
+      </Text>
+    );
+  }
+
+  return <EventCardCarousel events={events} />;
+}
+
 export default function Home() {
   const router = useRouter();
 
@@ -85,6 +105,18 @@ export default function Home() {
                 Whether it's a Friday night dinner, a holiday celebration, or a simple gathering, every shared moment strengthens the fabric of our community and creates a place we're all proud to call home.
               </Text>
             </div>
+          </div>
+        </section>
+
+        <section className={styles.events}>
+          <div className={styles.container}>
+            <Title level={2} className={styles.sectionTitle}>Upcoming Events</Title>
+            <Text variant="div" className={styles.sectionSubtitle}>
+              Discover community gatherings and dinners near you
+            </Text>
+            <Suspense fallback={<Loading variant="pulse" size="sm" />}>
+              <EventsCarousel />
+            </Suspense>
           </div>
         </section>
 

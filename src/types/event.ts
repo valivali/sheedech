@@ -12,7 +12,8 @@ export enum OccasionType {
   CASUAL = "casual",
   BYOB = "byob",
   WORKSHOP = "workshop",
-  CULTURAL = "cultural"
+  CULTURAL = "cultural",
+  OTHER = "other"
 }
 
 export enum ParkingType {
@@ -89,6 +90,7 @@ export interface Event {
 
   title: string
   occasionType: OccasionType
+  customOccasionType?: string
   eventDate: Date
   startTime: string
   endTime?: string
@@ -142,6 +144,7 @@ export interface EventWithPhotos extends Event {
 export interface CreateEventRequest {
   title: string
   occasionType: OccasionType
+  customOccasionType?: string
   eventDate: string
   startTime: string
   endTime?: string
@@ -192,4 +195,9 @@ export interface CreateEventResponse {
   success: boolean
   data?: EventWithPhotos
   error?: string
+}
+
+export interface EventCardData extends EventWithPhotos {
+  hostFirstName: string
+  hostDiningImages: Array<{ url: string }>
 }

@@ -17,6 +17,10 @@ function DashboardContent() {
     router.push("/events/create");
   };
 
+  const handleMyEventsClick = () => {
+    router.push("/events/my-events");
+  };
+
   return (
     <>
       <div className={styles.welcomeSection}>
@@ -27,7 +31,7 @@ function DashboardContent() {
       </div>
 
       <div className={styles.dashboardGrid}>
-        <div className={styles.card}>
+        <div className={`${styles.card} ${styles.clickableCard}`} onClick={handleMyEventsClick}>
           <Title level={3}>Upcoming Events</Title>
           <Text>
             Discover community gatherings and dinners near you.

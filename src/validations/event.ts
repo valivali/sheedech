@@ -15,6 +15,7 @@ const textFieldSchema = z.string().max(512, 'Maximum 512 characters allowed').op
 export const createEventSchema = z.object({
   title: z.string().min(3, 'Title must be at least 3 characters').max(100, 'Title too long'),
   occasionType: z.nativeEnum(OccasionType),
+  customOccasionType: z.string().optional(),
   eventDate: z.string().min(1, 'Event date is required'),
   startTime: z.string().min(1, 'Start time is required'),
   endTime: z.string().optional(),
@@ -60,6 +61,14 @@ export const createEventSchema = z.object({
 
   status: z.nativeEnum(EventStatus).optional(),
   photos: z.array(z.string()).optional(),
+}).refine((data) => {
+  if (data.occasionType === OccasionType.OTHER) {
+    return data.customOccasionType && data.customOccasionType.trim().length > 0;
+  }
+  return true;
+}, {
+  message: 'Custom occasion type is required when selecting "Other"',
+  path: ['customOccasionType'],
 }).refine((data) => {
   if (data.minGuests && data.maxGuests) {
     return data.minGuests <= data.maxGuests;
