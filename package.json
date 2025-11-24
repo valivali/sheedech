@@ -18,12 +18,12 @@
     "@cloudinary/react": "^1.14.3",
     "@cloudinary/url-gen": "^1.22.0",
     "@hookform/resolvers": "^5.2.2",
-    "@prisma/client": "^6.19.0",
+    "@prisma/client": "^5.22.0",
+    "@prisma/extension-accelerate": "^3.0.0",
     "@tanstack/react-query": "^5.62.19",
     "cloudinary": "^2.8.0",
     "date-fns": "^4.1.0",
     "next": "16.0.3",
-    "prisma": "^6.19.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-easy-crop": "^5.5.5",
@@ -48,7 +48,8 @@
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-unused-imports": "^4.1.4",
     "globals": "^15.14.0",
-    "typescript": "^5",
+    "prisma": "^5.22.0",
+    "typescript": "^5.9.3",
     "typescript-eslint": "^8.17.0"
   }
 }

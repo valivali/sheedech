@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense } from "react";
+import { useRouter } from "next/navigation";
 import { useUser } from "@/lib/auth";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -10,6 +11,11 @@ import styles from "./Dashboard.module.scss";
 
 function DashboardContent() {
   const { user } = useUser();
+  const router = useRouter();
+
+  const handleHostEventClick = () => {
+    router.push("/events/create");
+  };
 
   return (
     <>
@@ -28,7 +34,7 @@ function DashboardContent() {
           </Text>
         </div>
 
-        <div className={styles.card}>
+        <div className={`${styles.card} ${styles.clickableCard}`} onClick={handleHostEventClick}>
           <Title level={3}>Host an Event</Title>
           <Text>
             Open your home and create meaningful connections.

@@ -8,13 +8,19 @@ interface AddressInputWithSuggestionsProps {
   onChange: (value: string) => void
   error?: string
   placeholder?: string
+  label?: string
+  helperText?: string
+  className?: string
 }
 
 export const AddressInputWithSuggestions = ({
   value = "",
   onChange,
   error,
-  placeholder = "123 Main St, City, State"
+  placeholder = "123 Main St, City, State",
+  label = "Address *",
+  helperText = "We will show estimated address to users until there is a match",
+  className
 }: AddressInputWithSuggestionsProps) => {
   const {
     suggestions: addressSuggestions,
@@ -30,12 +36,12 @@ export const AddressInputWithSuggestions = ({
   })
 
   return (
-    <div className={styles.addressContainer}>
+    <div className={`${styles.addressContainer} ${className || ''}`}>
       <Input
-        label="Address *"
+        label={label}
         value={value}
         error={error}
-        helperText="We will show estimated address to users until there is a match"
+        helperText={helperText}
         placeholder={placeholder}
         onChange={(e) => {
           onChange(e.target.value)

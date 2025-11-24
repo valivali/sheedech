@@ -16,6 +16,7 @@ model User {
   onboarding      UserOnboarding?
   photos          UserPhoto[]
   diningImages    DiningImage[]
+  events          Event[]
 }
 
 model UserOnboarding {
@@ -164,6 +165,93 @@ model DiningImage {
   order       Int
   caption     String?
   isPrimary   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+}
+
+enum EventStatus {
+  draft
+  pending
+  active
+  cancelled
+}
+
+model Event {
+  id                String        @id @default(cuid())
+  userId            String
+  user              User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  slug              String        @unique
+  status            EventStatus   @default(draft)
+  viewCount         Int           @default(0)
+
+  title             String
+  occasionType      String
+  eventDate         DateTime
+  startTime         String
+  endTime           String?
+  description       String?
+
+  formattedAddress  String?
+  streetName        String?
+  houseNumber       String?
+  city              String?
+  state             String?
+  country           String?
+  postalCode        String?
+  lat               Float?
+  lon               Float?
+  neighborhood      String?
+  accessibility     String[]
+  parking           String?
+
+  cuisineTheme      String[]
+  customCuisineTheme String?
+  proposedMenu      String[]
+  isKosher          Boolean?
+  isVegetarian      Boolean?
+  isGlutenFree      Boolean?
+  hasNuts           Boolean?
+  hasDairy          Boolean?
+  accommodatesDietary String[]
+
+  maxGuests         Int
+  minGuests         Int?
+  kidFriendly       Boolean?
+  petFriendly       Boolean?
+  smokingAllowed    Boolean?
+  alcoholProvided   Boolean?
+  byob              Boolean?
+  whoElsePresent    String[]
+
+  atmosphereTags    String[]
+  houseRules        String?
+
+  contributionType  String?
+  contributionAmount Float?
+
+  photos            EventPhoto[]
+
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  @@index([userId])
+  @@index([slug])
+  @@index([status])
+  @@index([eventDate])
+}
+
+model EventPhoto {
+  id          String    @id @default(cuid())
+  eventId     String
+  event       Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  url         String
+  width       Int?
+  height      Int?
+  cropX       Float?
+  cropY       Float?
+  cropWidth   Float?
+  cropHeight  Float?
+  order       Int
+  caption     String?
   createdAt   DateTime  @default(now())
 }
 
