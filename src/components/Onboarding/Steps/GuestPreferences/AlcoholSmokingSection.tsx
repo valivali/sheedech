@@ -4,7 +4,7 @@ import { ControlledCheckboxGroup } from '@/components/UI/CheckboxGroup';
 import { RadioGroup, RadioItem } from '@/components/UI/RadioGroup';
 import { GuestPreferencesFormData } from '@/validations/onboarding';
 import { ALCOHOL_OPTIONS, SMOKING_GUEST_OPTIONS } from './constants';
-
+import styles from "./GuestPreferencesStep.module.scss"
 interface AlcoholSmokingSectionProps {
   control: Control<GuestPreferencesFormData>;
   errors: FieldErrors<GuestPreferencesFormData>;
@@ -17,14 +17,14 @@ export const AlcoholSmokingSection = ({
   smokingAsGuest,
 }: AlcoholSmokingSectionProps) => {
   return (
-    <div className="section">
-      <h3 className="sectionHeader">Alcohol & Smoking</h3>
+    <div className={styles.section}>
+      <h3 className={styles.sectionHeader}>Alcohol & Smoking</h3>
 
       <Controller
         name="alcoholStance"
         control={control}
         render={({ field }) => (
-          <RadioGroup label="Alcohol stance" labelClassName="questionLabel">
+          <RadioGroup label="Alcohol stance" labelClassName={styles.questionLabel}>
             {ALCOHOL_OPTIONS.map(option => (
               <RadioItem
                 key={option.value}
@@ -49,7 +49,7 @@ export const AlcoholSmokingSection = ({
               value={field.value}
               onChange={field.onChange}
               label="Smoking preferences (as guest)"
-              labelClassName="questionLabel"
+              labelClassName={styles.questionLabel}
             />
             {smokingAsGuest.includes('other') && (
               <Controller
@@ -61,7 +61,7 @@ export const AlcoholSmokingSection = ({
                     placeholder="Please specify"
                     error={errors.smokingAsGuestOther?.message}
                     maxLength={512}
-                    className="otherInput"
+                    className={styles.otherInput}
                   />
                 )}
               />

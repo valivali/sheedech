@@ -13,14 +13,14 @@ type PetAction =
   | { type: 'RESET' };
 
 const petReducer = (state: typeof INITIAL_PET_STATE, action: PetAction) => {
-  return match(action.type)
-    .with('SET_NAME', (action: string) => {
-        return { ...state, name: action };
+  return match(action)
+    .with({ type: 'SET_NAME' }, (action) => {
+        return { ...state, name: action.payload };
     })
-    .with('SET_KIND', (action: string) => {
-        return { ...state, kind: action };
+    .with({ type: 'SET_KIND' }, (action) => {
+        return { ...state, kind: action.payload };
     })
-    .with('RESET', () => {
+    .with({ type: 'RESET' }, () => {
         return INITIAL_PET_STATE;
     })
     .exhaustive();

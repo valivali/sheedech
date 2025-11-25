@@ -52,6 +52,28 @@
   font-size: 1rem;
 }
 
+.formErrors {
+  margin-bottom: 1rem;
+}
+
+.errorBanner {
+  background: rgba(200, 125, 92, 0.1);
+  border: 1px solid var(--accent-terracotta);
+  border-radius: 8px;
+  padding: 1rem;
+  color: var(--accent-terracotta);
+  font-size: 14px;
+
+  ul {
+    margin: 0.5rem 0 0 1rem;
+    padding: 0;
+
+    li {
+      margin-bottom: 0.25rem;
+    }
+  }
+}
+
 .actions {
   display: flex;
   justify-content: space-between;

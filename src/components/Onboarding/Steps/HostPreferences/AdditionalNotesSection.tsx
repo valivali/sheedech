@@ -3,16 +3,16 @@ import { memo } from 'react';
 import { Text } from '@/components/UI/Text';
 import { Textarea } from '@/components/UI/Textarea';
 import { HostPreferencesFormData } from '@/validations/onboarding';
-
+import styles from "./HostPreferencesStep.module.scss"
 interface AdditionalNotesSectionProps {
   control: Control<HostPreferencesFormData>;
 }
 
 export const AdditionalNotesSection = memo(({ control }: AdditionalNotesSectionProps) => {
   return (
-    <div className="section">
-      <h3 className="sectionHeader">Additional Notes</h3>
-      <Text className="sectionDescription">
+    <div className={styles.section}>
+      <h3 className={styles.sectionHeader}>Additional Notes</h3>
+      <Text className={styles.sectionDescription}>
         Any additional information you'd like to share about your hosting preferences.
       </Text>
 

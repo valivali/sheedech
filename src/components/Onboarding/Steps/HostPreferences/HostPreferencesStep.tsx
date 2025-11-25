@@ -35,7 +35,7 @@ export const HostPreferencesStep = ({ onNext, onBack, initialData }: HostPrefere
     control,
     handleSubmit,
     watch,
-    formState: { errors }
+    formState: { errors, isValid }
   } = useForm<HostPreferencesFormData>({
     resolver: zodResolver(hostPreferencesSchema),
     mode: "onChange",
@@ -86,7 +86,6 @@ export const HostPreferencesStep = ({ onNext, onBack, initialData }: HostPrefere
     <div className={styles.container}>
       <Title level={2}>Host Preferences</Title>
       <Text className={styles.subtitle}>Tell us about hosting at your place. This helps guests know what to expect.</Text>
-
       <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
         <SmokingEventPreferencesSection control={control} errors={errors} smokingAsHost={smokingAsHost} />
 
@@ -104,11 +103,24 @@ export const HostPreferencesStep = ({ onNext, onBack, initialData }: HostPrefere
 
         <AdditionalNotesSection control={control} />
 
+        {Object.keys(errors).length > 0 && (
+          <div className={styles.formErrors}>
+            <div className={styles.errorBanner}>
+              Please fix the following errors:
+              <ul>
+                {Object.entries(errors).map(([field, error]) => (
+                  <li key={field}>{error?.message}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
+
         <div className={styles.actions}>
           <Button type="button" onClick={onBack} variant="secondary" size="md">
             Back
           </Button>
-          <Button type="submit" disabled={isPending} size="md">
+          <Button type="submit" disabled={!isValid || isPending} size="md">
             {isPending ? "Saving..." : "Next Step"}
           </Button>
         </div>

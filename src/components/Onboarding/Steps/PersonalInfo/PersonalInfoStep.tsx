@@ -3,21 +3,21 @@
 import "react-phone-input-2/lib/style.css"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useState, useCallback } from "react"
+import { useCallback, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import PhoneInput from "react-phone-input-2"
 
 import { useSavePersonalInfo } from "@/api/frontend/onboarding"
-import { AddressInputWithSuggestions } from './AddressInputWithSuggestions'
-import { FamilyMemberForm } from './FamilyMemberForm'
-import { PetForm } from './PetForm'
 import { Button } from "@/components/UI/Button"
 import { Input } from "@/components/UI/Input"
 import { Text, Title } from "@/components/UI/Text"
 import { PersonalInfo } from "@/types/onboarding"
 import { FamilyMemberFormData, PersonalInfoFormData, personalInfoSchema, PetFormData } from "@/validations/onboarding"
 
+import { AddressInputWithSuggestions } from "./AddressInputWithSuggestions"
+import { FamilyMemberForm } from "./FamilyMemberForm"
 import styles from "./PersonalInfoStep.module.scss"
+import { PetForm } from "./PetForm"
 
 interface PersonalInfoStepProps {
   onNext: () => void
@@ -55,19 +55,22 @@ export const PersonalInfoStep = ({ onNext, initialData }: PersonalInfoStepProps)
     setPets(newPets)
   }, [])
 
-  const onSubmit = useCallback((data: PersonalInfoFormData) => {
-    const formData = {
-      ...data,
-      familyMembers,
-      pets
-    }
-
-    savePersonalInfo(formData, {
-      onSuccess: () => {
-        onNext()
+  const onSubmit = useCallback(
+    (data: PersonalInfoFormData) => {
+      const formData = {
+        ...data,
+        familyMembers,
+        pets
       }
-    })
-  }, [familyMembers, pets, savePersonalInfo, onNext])
+
+      savePersonalInfo(formData, {
+        onSuccess: () => {
+          onNext()
+        }
+      })
+    },
+    [familyMembers, pets, savePersonalInfo, onNext]
+  )
 
   return (
     <div className={styles.container}>

@@ -1,18 +1,20 @@
-import { Controller, Control, FieldErrors } from 'react-hook-form';
-import { Input } from '@/components/UI/Input';
-import { ControlledCheckboxGroup } from '@/components/UI/CheckboxGroup';
-import { HostPreferencesFormData } from '@/validations/onboarding';
-import { PARKING_OPTIONS } from './constants';
+import { Control, Controller, FieldErrors } from "react-hook-form"
 
+import { ControlledCheckboxGroup } from "@/components/UI/CheckboxGroup"
+import { Input } from "@/components/UI/Input"
+import { HostPreferencesFormData } from "@/validations/onboarding"
+
+import { PARKING_OPTIONS } from "./constants"
+import styles from "./HostPreferencesStep.module.scss"
 interface LogisticsSectionProps {
-  control: Control<HostPreferencesFormData>;
-  errors: FieldErrors<HostPreferencesFormData>;
+  control: Control<HostPreferencesFormData>
+  errors: FieldErrors<HostPreferencesFormData>
 }
 
 export const LogisticsSection = ({ control, errors }: LogisticsSectionProps) => {
   return (
-    <div className="section">
-      <h3 className="sectionHeader">Logistics</h3>
+    <div className={styles.section}>
+      <h3 className={styles.sectionHeader}>Logistics</h3>
 
       <Controller
         name="parking"
@@ -23,7 +25,7 @@ export const LogisticsSection = ({ control, errors }: LogisticsSectionProps) => 
             value={field.value}
             onChange={field.onChange}
             label="Parking options"
-            labelClassName="questionLabel"
+            labelClassName={styles.questionLabel}
           />
         )}
       />
@@ -42,5 +44,5 @@ export const LogisticsSection = ({ control, errors }: LogisticsSectionProps) => 
         )}
       />
     </div>
-  );
-};
+  )
+}

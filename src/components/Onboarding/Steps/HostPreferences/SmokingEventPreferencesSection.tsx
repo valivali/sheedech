@@ -1,24 +1,22 @@
-import { Controller, Control, FieldErrors } from 'react-hook-form';
-import { Input } from '@/components/UI/Input';
-import { CheckboxGroup, CheckboxItem, ControlledCheckboxGroup } from '@/components/UI/CheckboxGroup';
-import { RadioGroup, RadioItem } from '@/components/UI/RadioGroup';
-import { HostPreferencesFormData } from '@/validations/onboarding';
-import { SMOKING_HOST_OPTIONS, EVENT_TYPES, NOISE_LEVELS } from './constants';
+import { Control, Controller, FieldErrors } from "react-hook-form"
 
+import { ControlledCheckboxGroup } from "@/components/UI/CheckboxGroup"
+import { Input } from "@/components/UI/Input"
+import { RadioGroup, RadioItem } from "@/components/UI/RadioGroup"
+import { HostPreferencesFormData } from "@/validations/onboarding"
+
+import { EVENT_TYPES, NOISE_LEVELS, SMOKING_HOST_OPTIONS } from "./constants"
+import styles from "./HostPreferencesStep.module.scss"
 interface SmokingEventPreferencesSectionProps {
-  control: Control<HostPreferencesFormData>;
-  errors: FieldErrors<HostPreferencesFormData>;
-  smokingAsHost: string[];
+  control: Control<HostPreferencesFormData>
+  errors: FieldErrors<HostPreferencesFormData>
+  smokingAsHost: string[]
 }
 
-export const SmokingEventPreferencesSection = ({
-  control,
-  errors,
-  smokingAsHost,
-}: SmokingEventPreferencesSectionProps) => {
+export const SmokingEventPreferencesSection = ({ control, errors, smokingAsHost }: SmokingEventPreferencesSectionProps) => {
   return (
-    <div className="section">
-      <h3 className="sectionHeader">Smoking & Event Preferences</h3>
+    <div className={styles.section}>
+      <h3 className={styles.sectionHeader}>Smoking & Event Preferences</h3>
 
       <Controller
         name="smokingAsHost"
@@ -30,9 +28,9 @@ export const SmokingEventPreferencesSection = ({
               value={field.value}
               onChange={field.onChange}
               label="Smoking preferences (as host)"
-              labelClassName="questionLabel"
+              labelClassName={styles.questionLabel}
             />
-            {smokingAsHost.includes('other') && (
+            {smokingAsHost.includes("other") && (
               <Controller
                 name="smokingAsHostOther"
                 control={control}
@@ -60,7 +58,8 @@ export const SmokingEventPreferencesSection = ({
             value={field.value}
             onChange={field.onChange}
             label="Type of events you host *"
-            labelClassName="questionLabel"
+            labelClassName={styles.questionLabel}
+            error={errors.eventTypes?.message}
           />
         )}
       />
@@ -83,14 +82,9 @@ export const SmokingEventPreferencesSection = ({
         name="noiseLevel"
         control={control}
         render={({ field }) => (
-          <RadioGroup label="Event atmosphere" labelClassName="questionLabel">
-            {NOISE_LEVELS.map(option => (
-              <RadioItem
-                key={option.value}
-                {...field}
-                value={option.value}
-                checked={field.value === option.value}
-              >
+          <RadioGroup label="Event atmosphere" labelClassName={styles.questionLabel}>
+            {NOISE_LEVELS.map((option) => (
+              <RadioItem key={option.value} {...field} value={option.value} checked={field.value === option.value}>
                 {option.label}
               </RadioItem>
             ))}
@@ -102,19 +96,11 @@ export const SmokingEventPreferencesSection = ({
         name="kidsOkay"
         control={control}
         render={({ field: { value, onChange } }) => (
-          <RadioGroup label="Are kids okay at your events?" labelClassName="questionLabel">
-            <RadioItem
-              key="yes"
-              checked={value === true}
-              onChange={() => onChange(true)}
-            >
+          <RadioGroup label="Are kids okay at your events?" labelClassName={styles.questionLabel}>
+            <RadioItem key="yes" checked={value === true} onChange={() => onChange(true)}>
               Yes
             </RadioItem>
-            <RadioItem
-              key="no"
-              checked={value === false}
-              onChange={() => onChange(false)}
-            >
+            <RadioItem key="no" checked={value === false} onChange={() => onChange(false)}>
               No
             </RadioItem>
           </RadioGroup>
@@ -125,24 +111,16 @@ export const SmokingEventPreferencesSection = ({
         name="byobPotluckOkay"
         control={control}
         render={({ field: { value, onChange } }) => (
-          <RadioGroup label="Are you okay with BYOB / potluck format?" labelClassName="questionLabel">
-            <RadioItem
-              key="yes"
-              checked={value === true}
-              onChange={() => onChange(true)}
-            >
+          <RadioGroup label="Are you okay with BYOB / potluck format?" labelClassName={styles.questionLabel}>
+            <RadioItem key="yes" checked={value === true} onChange={() => onChange(true)}>
               Yes
             </RadioItem>
-            <RadioItem
-              key="no"
-              checked={value === false}
-              onChange={() => onChange(false)}
-            >
+            <RadioItem key="no" checked={value === false} onChange={() => onChange(false)}>
               No
             </RadioItem>
           </RadioGroup>
         )}
       />
     </div>
-  );
-};
+  )
+}

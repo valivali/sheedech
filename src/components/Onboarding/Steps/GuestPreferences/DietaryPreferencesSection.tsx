@@ -4,6 +4,7 @@ import { ControlledCheckboxGroup } from '@/components/UI/CheckboxGroup';
 import { RadioGroup, RadioItem } from '@/components/UI/RadioGroup';
 import { GuestPreferencesFormData } from '@/validations/onboarding';
 import { DIETARY_RESTRICTIONS, SPICE_LEVELS } from './constants';
+import styles from "./GuestPreferencesStep.module.scss"
 
 interface DietaryPreferencesSectionProps {
   control: Control<GuestPreferencesFormData>;
@@ -17,8 +18,8 @@ export const DietaryPreferencesSection = ({
   dietaryRestrictions,
 }: DietaryPreferencesSectionProps) => {
   return (
-    <div className="section">
-      <h3 className="sectionHeader">Dietary Preferences</h3>
+    <div className={styles.section}>
+      <h3 className={styles.sectionHeader}>Dietary Preferences</h3>
 
       <Controller
         name="dietaryRestrictions"
@@ -30,7 +31,7 @@ export const DietaryPreferencesSection = ({
               value={field.value}
               onChange={field.onChange}
               label="Dietary restrictions"
-              labelClassName="questionLabel"
+              labelClassName={styles.questionLabel}
             />
             {dietaryRestrictions.includes('other') && (
               <Controller
@@ -42,7 +43,7 @@ export const DietaryPreferencesSection = ({
                     placeholder="Please specify"
                     error={errors.dietaryRestrictionsOther?.message}
                     maxLength={512}
-                    className="otherInput"
+                    className={styles.otherInput}
                   />
                 )}
               />
@@ -69,7 +70,7 @@ export const DietaryPreferencesSection = ({
         name="spiceLevel"
         control={control}
         render={({ field }) => (
-          <RadioGroup label="Spice level comfort" labelClassName="questionLabel">
+          <RadioGroup label="Spice level comfort" labelClassName={styles.questionLabel}>
             {SPICE_LEVELS.map(option => (
               <RadioItem
                 key={option.value}

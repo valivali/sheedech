@@ -15,17 +15,17 @@ type FamilyAction =
   | { type: 'RESET' };
 
 const familyReducer = (state: typeof INITIAL_FAMILY_STATE, action: FamilyAction) => {
-  return match(action.type)
-    .with('SET_NAME', (action: string) => {
-        return { ...state, name: action };
+  return match(action)
+    .with({ type: 'SET_NAME' }, (action) => {
+        return { ...state, name: action.payload };
     })
-    .with('SET_AGE', (action: string) => {
-        return { ...state, age: action };
+    .with({ type: 'SET_AGE' }, (action) => {
+        return { ...state, age: action.payload };
     })
-    .with('SET_RELATIONSHIP', (action: string) => {
-        return { ...state, relationship: action };
+    .with({ type: 'SET_RELATIONSHIP' }, (action) => {
+        return { ...state, relationship: action.payload };
     })
-    .with('RESET', (action) => {
+    .with({ type: 'RESET' }, () => {
         return INITIAL_FAMILY_STATE;
     })
     .exhaustive();

@@ -1,39 +1,30 @@
-import { Controller, Control, FieldErrors } from 'react-hook-form';
-import { Input } from '@/components/UI/Input';
-import { RadioCardGroup, RadioCardItem } from '@/components/UI/RadioCard';
-import { Range } from '@/components/UI/Range';
-import { HostPreferencesFormData } from '@/validations/onboarding';
+import { Control, Controller, FieldErrors } from "react-hook-form"
 
+import { Input } from "@/components/UI/Input"
+import { RadioCardGroup, RadioCardItem } from "@/components/UI/RadioCard"
+import { Range } from "@/components/UI/Range"
+import { HostPreferencesFormData } from "@/validations/onboarding"
+
+import styles from "./HostPreferencesStep.module.scss"
 interface BasicHomeDetailsSectionProps {
-  control: Control<HostPreferencesFormData>;
-  errors: FieldErrors<HostPreferencesFormData>;
+  control: Control<HostPreferencesFormData>
+  errors: FieldErrors<HostPreferencesFormData>
 }
 
-export const BasicHomeDetailsSection = ({
-  control,
-  errors,
-}: BasicHomeDetailsSectionProps) => {
+export const BasicHomeDetailsSection = ({ control, errors }: BasicHomeDetailsSectionProps) => {
   return (
-    <div className="section">
-      <h3 className="sectionHeader">Basic Home Details</h3>
+    <div className={styles.section}>
+      <h3 className={styles.sectionHeader}>Basic Home Details</h3>
 
       <Controller
         name="propertyType"
         control={control}
         render={({ field }) => (
-          <RadioCardGroup label="Apartment or house?" labelClassName="questionLabel">
-            <RadioCardItem
-              {...field}
-              value="apartment"
-              checked={field.value === 'apartment'}
-            >
+          <RadioCardGroup label="Apartment or house?" labelClassName={styles.questionLabel}>
+            <RadioCardItem {...field} value="apartment" checked={field.value === "apartment"}>
               Apartment
             </RadioCardItem>
-            <RadioCardItem
-              {...field}
-              value="house"
-              checked={field.value === 'house'}
-            >
+            <RadioCardItem {...field} value="house" checked={field.value === "house"}>
               House
             </RadioCardItem>
           </RadioCardGroup>
@@ -73,26 +64,14 @@ export const BasicHomeDetailsSection = ({
         name="indoorOutdoorSeating"
         control={control}
         render={({ field }) => (
-          <RadioCardGroup label="Indoor / outdoor seating available?" labelClassName="questionLabel">
-            <RadioCardItem
-              {...field}
-              value="indoor"
-              checked={field.value === 'indoor'}
-            >
+          <RadioCardGroup label="Indoor / outdoor seating available?" labelClassName={styles.questionLabel}>
+            <RadioCardItem {...field} value="indoor" checked={field.value === "indoor"}>
               Indoor
             </RadioCardItem>
-            <RadioCardItem
-              {...field}
-              value="outdoor"
-              checked={field.value === 'outdoor'}
-            >
+            <RadioCardItem {...field} value="outdoor" checked={field.value === "outdoor"}>
               Outdoor
             </RadioCardItem>
-            <RadioCardItem
-              {...field}
-              value="both"
-              checked={field.value === 'both'}
-            >
+            <RadioCardItem {...field} value="both" checked={field.value === "both"}>
               Both
             </RadioCardItem>
           </RadioCardGroup>
@@ -105,7 +84,7 @@ export const BasicHomeDetailsSection = ({
         render={({ field: { value, onChange } }) => (
           <Input
             type="number"
-            value={value?.toString() || ''}
+            value={value?.toString() || ""}
             onChange={(e) => onChange(e.target.value ? parseInt(e.target.value, 10) : undefined)}
             label="Dining table size (number of seats)"
             placeholder="e.g., 6"
@@ -114,5 +93,5 @@ export const BasicHomeDetailsSection = ({
         )}
       />
     </div>
-  );
-};
+  )
+}

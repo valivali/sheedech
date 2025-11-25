@@ -1,17 +1,19 @@
-import { Controller, Control } from 'react-hook-form';
-import { memo } from 'react';
-import { ControlledCheckboxGroup } from '@/components/UI/CheckboxGroup';
-import { HostPreferencesFormData } from '@/validations/onboarding';
-import { ACCESSIBILITY_OPTIONS } from './constants';
+import { memo } from "react"
+import { Control, Controller } from "react-hook-form"
 
+import { ControlledCheckboxGroup } from "@/components/UI/CheckboxGroup"
+import { HostPreferencesFormData } from "@/validations/onboarding"
+
+import { ACCESSIBILITY_OPTIONS } from "./constants"
+import styles from "./HostPreferencesStep.module.scss"
 interface AccessibilitySectionProps {
-  control: Control<HostPreferencesFormData>;
+  control: Control<HostPreferencesFormData>
 }
 
 export const AccessibilitySection = memo(({ control }: AccessibilitySectionProps) => {
   return (
-    <div className="section">
-      <h3 className="sectionHeader">Accessibility</h3>
+    <div className={styles.section}>
+      <h3 className={styles.sectionHeader}>Accessibility</h3>
 
       <Controller
         name="accessibility"
@@ -22,12 +24,12 @@ export const AccessibilitySection = memo(({ control }: AccessibilitySectionProps
             value={field.value}
             onChange={field.onChange}
             label="Select all that apply"
-            labelClassName="questionLabel"
+            labelClassName={styles.questionLabel}
           />
         )}
       />
     </div>
-  );
-});
+  )
+})
 
-AccessibilitySection.displayName = 'AccessibilitySection';
+AccessibilitySection.displayName = "AccessibilitySection"

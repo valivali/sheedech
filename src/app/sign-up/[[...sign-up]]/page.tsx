@@ -11,8 +11,8 @@ export default function SignUpPage() {
         background: "linear-gradient(135deg, var(--background-primary) 0%, var(--background-secondary) 100%)",
       }}
     >
-      <SignUp 
-        fallbackRedirectUrl="/dashboard"
+      <SignUp
+        fallbackRedirectUrl="/onboarding"
         signInUrl="/sign-in"
       />
     </div>
