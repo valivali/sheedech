@@ -321,6 +321,16 @@ export function EventCreate() {
                 <AddressInputWithSuggestions
                   value={field.value || ""}
                   onChange={field.onChange}
+                  onSuggestionSelect={(suggestion) => {
+                    setValue("lat", suggestion.properties.lat)
+                    setValue("lon", suggestion.properties.lon)
+                    if (suggestion.properties.city) setValue("city", suggestion.properties.city)
+                    if (suggestion.properties.state) setValue("state", suggestion.properties.state)
+                    if (suggestion.properties.country) setValue("country", suggestion.properties.country)
+                    if (suggestion.properties.postcode) setValue("postalCode", suggestion.properties.postcode)
+                    if (suggestion.properties.street) setValue("streetName", suggestion.properties.street)
+                    if (suggestion.properties.housenumber) setValue("houseNumber", suggestion.properties.housenumber)
+                  }}
                   label="Address"
                   helperText=""
                   placeholder="123 Main St, City, State"

@@ -1,11 +1,12 @@
 import { Input } from "@/components/UI/Input"
-import { useAddressAutocomplete } from "@/hooks"
+import { useAddressAutocomplete, AddressSuggestion } from "@/hooks"
 
 import styles from "./PersonalInfoStep.module.scss"
 
 interface AddressInputWithSuggestionsProps {
   value?: string
   onChange: (value: string) => void
+  onSuggestionSelect?: (suggestion: AddressSuggestion) => void
   error?: string
   placeholder?: string
   label?: string
@@ -16,6 +17,7 @@ interface AddressInputWithSuggestionsProps {
 export const AddressInputWithSuggestions = ({
   value = "",
   onChange,
+  onSuggestionSelect,
   error,
   placeholder = "123 Main St, City, State",
   label = "Address *",
@@ -32,7 +34,8 @@ export const AddressInputWithSuggestions = ({
     handleAddressBlur
   } = useAddressAutocomplete({
     setValue: (field, val) => onChange(val),
-    fieldName: "address"
+    fieldName: "address",
+    onSuggestionSelect
   })
 
   return (

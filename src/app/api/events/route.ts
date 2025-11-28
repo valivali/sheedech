@@ -7,8 +7,13 @@ import { EventCardData, EventStatus } from "@/types/event"
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams
-    const limit = parseInt(searchParams.get("limit") || "20")
+    const limit = parseInt(searchParams.get("limit") || "100")
     const status = searchParams.get("status")
+    
+    const minLat = searchParams.get("minLat")
+    const maxLat = searchParams.get("maxLat")
+    const minLon = searchParams.get("minLon")
+    const maxLon = searchParams.get("maxLon")
 
     const where: any = {}
     if (status) {
@@ -17,6 +22,15 @@ export async function GET(request: NextRequest) {
       where.status = {
         in: ["active", "pending"]
       }
+    }
+
+    if (minLat && maxLat && minLon && maxLon) {
+      where.AND = [
+        { lat: { gte: parseFloat(minLat), lte: parseFloat(maxLat) } },
+        { lon: { gte: parseFloat(minLon), lte: parseFloat(maxLon) } },
+        { lat: { not: null } },
+        { lon: { not: null } }
+      ]
     }
 
     const events = await prisma.event.findMany({

@@ -31,6 +31,33 @@ export async function POST(request: NextRequest) {
       return !!existing
     })
 
+    let lat = validatedData.lat
+    let lon = validatedData.lon
+
+    // Fallback: If lat/lon are missing but address is present, try to geocode
+    if ((!lat || !lon) && validatedData.formattedAddress) {
+      try {
+        const apiKey = process.env.NEXT_PUBLIC_GEOAPIFY_KEY
+        if (apiKey) {
+          const response = await fetch(
+            `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(
+              validatedData.formattedAddress
+            )}&apiKey=${apiKey}&limit=1`
+          )
+          if (response.ok) {
+            const data = await response.json()
+            if (data.features && data.features.length > 0) {
+              const location = data.features[0]
+              lat = location.properties.lat
+              lon = location.properties.lon
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Error geocoding fallback:", error)
+      }
+    }
+
     const eventData = {
       userId: user.id,
       slug,
@@ -49,8 +76,8 @@ export async function POST(request: NextRequest) {
       state: validatedData.state || null,
       country: validatedData.country || null,
       postalCode: validatedData.postalCode || null,
-      lat: validatedData.lat || null,
-      lon: validatedData.lon || null,
+      lat: lat || null,
+      lon: lon || null,
       neighborhood: validatedData.neighborhood || null,
       accessibility: validatedData.accessibility || [],
       parking: validatedData.parking || null,
