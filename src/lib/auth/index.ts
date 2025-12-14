@@ -9,4 +9,5 @@ export {
 
 export type { User } from "@clerk/nextjs/server";
 export { clerkAppearance } from "./theme";
+export { useUserData } from "@/providers/UserProvider";
 

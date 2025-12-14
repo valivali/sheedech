@@ -18,9 +18,11 @@
   
   --border-light: #e8e3dc;
   --border-medium: #d4cdc2;
+  --border-soft: #e8e3dc;
   
   --shadow-soft: 0 4px 20px rgba(139, 111, 71, 0.08);
   --shadow-hover: 0 8px 30px rgba(139, 111, 71, 0.12);
+  --shadow-large: 0 20px 60px rgba(139, 111, 71, 0.2);
 }
 
 * {
@@ -42,6 +44,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.6;
+
+  &.drawer-open {
+    overflow: hidden;
+  }
 }
 
 a {

@@ -1,0 +1,28 @@
+.inputsRow {
+    display: flex;
+    gap: 16px;
+    align-items: flex-end;
+    width: 100%;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+.searchInputGroup {
+    flex: 1;
+    min-width: 250px;
+}
+
+.dateRangePickerContainer {
+    max-width: 330px;
+}
+
+.label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+}

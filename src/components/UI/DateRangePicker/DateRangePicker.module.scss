@@ -1,0 +1,161 @@
+.container {
+  position: relative;
+  width: 100%;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--background-primary);
+  border: 1.5px solid var(--border-light);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+
+  &:hover {
+    border-color: var(--border-medium);
+  }
+
+  &.open {
+    border-color: var(--primary-gold);
+    box-shadow: 0 0 0 3px rgba(196, 153, 98, 0.1);
+  }
+}
+
+.placeholder {
+  color: var(--text-light);
+  font-size: 15px;
+}
+
+.value {
+  color: var(--text-primary);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.icon {
+  color: var(--text-light);
+  width: 16px;
+  height: 16px;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 100;
+  background: var(--background-primary);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  width: 320px;
+  animation: fadeIn 0.2s ease;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.monthTitle {
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+.navButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: var(--text-secondary);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: var(--background-secondary);
+    color: var(--text-primary);
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  text-align: center;
+}
+
+.dayLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-light);
+  padding: 8px 0;
+}
+
+.day {
+  font-size: 14px;
+  padding: 8px 0;
+  cursor: pointer;
+  border-radius: 50%;
+  color: var(--text-primary);
+  position: relative;
+
+  &:hover:not(.disabled) {
+    background: var(--background-secondary);
+  }
+
+  &.disabled {
+    color: var(--text-disabled);
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &.today {
+    font-weight: 600;
+    color: var(--primary-gold);
+  }
+
+  &.selected {
+    background: var(--primary-gold);
+    color: white;
+    
+    &:hover {
+      background: var(--primary-deep);
+    }
+  }
+
+  &.inRange {
+    background: rgba(196, 153, 98, 0.15);
+    border-radius: 0;
+    
+    &.rangeStart {
+      border-top-left-radius: 50%;
+      border-bottom-left-radius: 50%;
+    }
+    
+    &.rangeEnd {
+      border-top-right-radius: 50%;
+      border-bottom-right-radius: 50%;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

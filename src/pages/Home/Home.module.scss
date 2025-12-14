@@ -15,12 +15,12 @@
   padding: 140px 0 80px;
   background: linear-gradient(135deg, var(--background-secondary) 0%, var(--primary-cream) 100%);
   text-align: center;
-  
+
   .heroTitle {
     font-size: 36px;
     margin-bottom: 20px;
   }
-  
+
   .heroSubtitle {
     font-size: 18px;
     margin-bottom: 35px;
@@ -33,17 +33,17 @@
 .mission {
   padding: 80px 0;
   background: var(--background-primary);
-  
+
   .missionContent {
     max-width: 800px;
     margin: 50px auto 0;
     text-align: center;
-    
+
     h2 {
       font-size: 32px;
       margin-bottom: 25px;
     }
-    
+
     .missionText {
       font-size: 17px;
       margin-bottom: 20px;
@@ -78,14 +78,14 @@
 .testimonials {
   padding: 80px 0;
   background: var(--background-secondary);
-  
+
   .testimonialGrid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 30px;
     margin-top: 40px;
   }
-  
+
   .testimonialCard {
     background: var(--background-primary);
     padding: 35px;
@@ -93,29 +93,29 @@
     box-shadow: var(--shadow-soft);
     transition: all 0.3s ease;
     border: 1px solid var(--border-light);
-    
+
     &:hover {
       transform: translateY(-5px);
       box-shadow: var(--shadow-hover);
     }
-    
+
     .testimonialText {
       font-size: 16px;
       margin-bottom: 25px;
       font-style: italic;
     }
-    
+
     .testimonialAuthor {
       display: flex;
       flex-direction: column;
       gap: 5px;
-      
+
       strong {
         color: var(--text-primary);
         font-size: 16px;
         font-weight: 600;
       }
-      
+
       span {
         color: var(--text-light);
         font-size: 14px;
@@ -127,25 +127,25 @@
 .values {
   padding: 80px 0;
   background: var(--background-primary);
-  
+
   .valueGrid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 30px;
     margin-top: 40px;
   }
-  
+
   .valueCard {
     text-align: center;
     padding: 30px;
-    
+
     h3 {
       font-size: 24px;
       font-weight: 600;
       color: var(--primary-gold);
       margin-bottom: 15px;
     }
-    
+
     div {
       font-size: 16px;
     }
@@ -156,18 +156,18 @@
   padding: 80px 0;
   background: linear-gradient(135deg, var(--primary-cream) 0%, var(--background-secondary) 100%);
   text-align: center;
-  
+
   .ctaTitle {
     font-size: 36px;
     margin: 40px 0 20px;
   }
-  
+
   .ctaDescription {
     font-size: 17px;
     max-width: 700px;
     margin: 0 auto 40px;
   }
-  
+
   .ctaButtons {
     display: flex;
     flex-direction: column;
@@ -180,45 +180,45 @@
   .container {
     padding: 0 40px;
   }
-  
+
   .hero {
     padding: 160px 0 100px;
-    
+
     .heroTitle {
       font-size: 52px;
     }
-    
+
     .heroSubtitle {
       font-size: 20px;
     }
   }
-  
+
   .mission {
     .missionContent {
       h2 {
         font-size: 38px;
       }
-      
+
       .missionText {
         font-size: 18px;
       }
     }
   }
-  
+
   .testimonials {
     .testimonialGrid {
       grid-template-columns: repeat(2, 1fr);
       gap: 35px;
     }
   }
-  
+
   .values {
     .valueGrid {
       grid-template-columns: repeat(2, 1fr);
       gap: 40px;
     }
   }
-  
+
   .cta {
     .ctaButtons {
       flex-direction: row;
@@ -231,18 +231,18 @@
 @media (min-width: 1024px) {
   .hero {
     padding: 180px 0 120px;
-    
+
     .heroTitle {
       font-size: 64px;
     }
   }
-  
+
   .testimonials {
     .testimonialGrid {
       grid-template-columns: repeat(3, 1fr);
     }
   }
-  
+
   .values {
     .valueGrid {
       grid-template-columns: repeat(4, 1fr);
@@ -250,3 +250,55 @@
   }
 }
 
+.search {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: var(--background-secondary);
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 70px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+}
+
+.searchContainer {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 90%;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+
+  @media (max-width: 768px) {
+    aspect-ratio: auto;
+    min-height: auto;
+    margin: 40px 0;
+  }
+}
+
+.title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0;
+  width: 100%;
+}

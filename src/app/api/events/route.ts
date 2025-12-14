@@ -9,11 +9,13 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams
     const limit = parseInt(searchParams.get("limit") || "100")
     const status = searchParams.get("status")
-    
+
     const minLat = searchParams.get("minLat")
     const maxLat = searchParams.get("maxLat")
     const minLon = searchParams.get("minLon")
     const maxLon = searchParams.get("maxLon")
+    const startDate = searchParams.get("startDate")
+    const endDate = searchParams.get("endDate")
 
     const where: any = {}
     if (status) {
@@ -31,6 +33,16 @@ export async function GET(request: NextRequest) {
         { lat: { not: null } },
         { lon: { not: null } }
       ]
+    }
+
+    if (startDate || endDate) {
+      where.eventDate = {}
+      if (startDate) {
+        where.eventDate.gte = new Date(startDate)
+      }
+      if (endDate) {
+        where.eventDate.lte = new Date(endDate)
+      }
     }
 
     const events = await prisma.event.findMany({

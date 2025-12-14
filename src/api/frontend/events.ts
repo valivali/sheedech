@@ -85,3 +85,32 @@ export function useUserEvents() {
   })
 }
 
+interface SingleEventResponse {
+  success: boolean
+  data?: EventCardData
+  error?: string
+}
+
+export function useEvent(eventId: string | null) {
+  return useQuery<EventCardData | null>({
+    queryKey: ["event", eventId],
+    queryFn: async () => {
+      if (!eventId) {
+        return null
+      }
+
+      const response = await fetch(`/api/events/${eventId}`)
+      const result: SingleEventResponse = await response.json()
+
+      if (!result.success) {
+        throw new Error(result.error || "Failed to fetch event")
+      }
+
+      return result.data || null
+    },
+    enabled: !!eventId,
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false
+  })
+}
+
