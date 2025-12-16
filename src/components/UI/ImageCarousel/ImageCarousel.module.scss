@@ -2,7 +2,7 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   background: var(--background-secondary);
   outline: none;
 
@@ -42,12 +42,12 @@
   justify-content: center;
   background: rgba(255, 255, 255, 0.9);
   border: none;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition-base);
   color: var(--text-primary);
   box-shadow: var(--shadow-soft);
-  z-index: 2;
+  z-index: var(--z-index-dropdown);
 
   &:hover {
     background: rgba(255, 255, 255, 1);
@@ -66,31 +66,31 @@
 }
 
 .arrowLeft {
-  left: 12px;
+  left: var(--spacing-3);
 }
 
 .arrowRight {
-  right: 12px;
+  right: var(--spacing-3);
 }
 
 .dots {
   position: absolute;
-  bottom: 12px;
+  bottom: var(--spacing-3);
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 8px;
-  z-index: 2;
+  gap: var(--spacing-2);
+  z-index: var(--z-index-dropdown);
 }
 
 .dot {
   width: 8px;
   height: 8px;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   border: none;
   background: rgba(255, 255, 255, 0.5);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition-base);
   padding: 0;
 
   &:hover {
@@ -102,7 +102,7 @@
 .dotActive {
   background: rgba(255, 255, 255, 1);
   width: 24px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
 }
 
 @media (max-width: 768px) {

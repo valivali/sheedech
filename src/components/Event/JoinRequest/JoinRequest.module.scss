@@ -1,0 +1,45 @@
+.requestSection {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.requestTitle {
+    font-family: var(--font-heading);
+    margin: 0;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.formField {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.fieldLabel {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.labelText {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.required {
+    color: var(--error-500);
+}
+
+.optional {
+    font-weight: normal;
+}
+
+.submitButton {
+    align-self: flex-start;
+}

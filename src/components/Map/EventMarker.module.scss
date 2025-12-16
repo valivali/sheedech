@@ -1,15 +1,15 @@
 .marker {
   position: relative;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: transform var(--transition-base);
 
   &:hover {
     transform: scale(1.1);
-    z-index: 10;
+    z-index: var(--z-index-dropdown);
 
     .pin {
       background: var(--accent-terracotta);
-      box-shadow: 0 4px 12px rgba(200, 125, 92, 0.4);
+      box-shadow: var(--shadow-md);
     }
   }
 }
@@ -21,8 +21,8 @@
   border: 3px solid var(--background-primary);
   border-radius: 50% 50% 50% 0;
   transform: rotate(-45deg);
-  box-shadow: 0 2px 8px rgba(139, 111, 71, 0.3);
-  transition: all 0.2s ease;
+  box-shadow: var(--shadow-soft);
+  transition: var(--transition-base);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -32,7 +32,7 @@
     width: 10px;
     height: 10px;
     background: var(--background-primary);
-    border-radius: 50%;
+    border-radius: var(--radius-full);
   }
 }
 

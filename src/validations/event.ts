@@ -34,7 +34,7 @@ export const createEventSchema = z.object({
   accessibility: z.array(z.nativeEnum(AccessibilityType)).optional(),
   parking: z.nativeEnum(ParkingType).optional(),
 
-  cuisineTheme: z.array(z.nativeEnum(CuisineTheme)).min(1, 'Please select at least one cuisine theme'),
+  cuisineTheme: z.array(z.nativeEnum(CuisineTheme)),
   customCuisineTheme: z.string().optional(),
   proposedMenu: z.array(z.string()).optional(),
   isKosher: z.boolean().optional(),
@@ -69,6 +69,22 @@ export const createEventSchema = z.object({
 }, {
   message: 'Custom occasion type is required when selecting "Other"',
   path: ['customOccasionType'],
+}).refine((data) => {
+  const hasOther = data.cuisineTheme?.includes(CuisineTheme.OTHER) || false;
+  if (hasOther) {
+    return data.customCuisineTheme && data.customCuisineTheme.trim().length > 0;
+  }
+  return true;
+}, {
+  message: 'Custom cuisine theme is required when selecting "Other"',
+  path: ['customCuisineTheme'],
+}).refine((data) => {
+  const themesWithoutOther = data.cuisineTheme?.filter((theme) => theme !== CuisineTheme.OTHER) || [];
+  const hasOther = data.cuisineTheme?.includes(CuisineTheme.OTHER) || false;
+  return themesWithoutOther.length > 0 || hasOther;
+}, {
+  message: 'Please select at least one cuisine theme',
+  path: ['cuisineTheme'],
 }).refine((data) => {
   if (data.minGuests && data.maxGuests) {
     return data.minGuests <= data.maxGuests;

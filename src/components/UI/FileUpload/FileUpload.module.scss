@@ -1,38 +1,38 @@
 .fileUpload {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--spacing-3);
 }
 
 .fileUploadLabel {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #1f2937;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-800);
 }
 
 .uploadArea {
-  border: 2px dashed #d1d5db;
-  border-radius: 0.75rem;
-  padding: 2rem;
-  background-color: #f9fafb;
+  border: 2px dashed var(--gray-300);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-8);
+  background-color: var(--gray-50);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition-base);
 
   &:hover {
-    border-color: #8b5cf6;
-    background-color: #f5f3ff;
+    border-color: var(--purple-500);
+    background-color: var(--purple-50);
   }
 }
 
 .uploadAreaDragging {
-  border-color: #8b5cf6;
-  background-color: #f5f3ff;
+  border-color: var(--purple-500);
+  background-color: var(--purple-50);
   transform: scale(1.02);
 }
 
 .uploadAreaHasFiles {
-  border-color: #10b981;
-  background-color: #ecfdf5;
+  border-color: var(--success-500);
+  background-color: var(--success-50);
 }
 
 .fileInput {
@@ -43,58 +43,58 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--spacing-2);
   text-align: center;
 }
 
 .uploadIcon {
   width: 3rem;
   height: 3rem;
-  color: #8b5cf6;
+  color: var(--purple-500);
 }
 
 .uploadText {
-  font-size: 0.875rem;
-  color: #6b7280;
+  font-size: var(--font-size-sm);
+  color: var(--gray-500);
   margin: 0;
 }
 
 .uploadTextBold {
-  font-weight: 600;
-  color: #8b5cf6;
+  font-weight: var(--font-weight-semibold);
+  color: var(--purple-500);
 }
 
 .uploadHint {
-  font-size: 0.75rem;
-  color: #9ca3af;
+  font-size: var(--font-size-xs);
+  color: var(--gray-400);
   margin: 0;
 }
 
 .fileList {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--spacing-2);
 }
 
 .fileItem {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.75rem;
-  background-color: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  transition: all 0.2s ease;
+  padding: var(--spacing-3);
+  background-color: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  transition: var(--transition-base);
 
   &:hover {
-    background-color: #f3f4f6;
+    background-color: var(--gray-100);
   }
 }
 
 .fileInfo {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: var(--spacing-3);
   flex: 1;
   min-width: 0;
 }
@@ -102,99 +102,99 @@
 .fileIcon {
   width: 1.25rem;
   height: 1.25rem;
-  color: #8b5cf6;
+  color: var(--purple-500);
   flex-shrink: 0;
 }
 
 .fileName {
-  font-size: 0.875rem;
-  color: #1f2937;
-  font-weight: 500;
+  font-size: var(--font-size-sm);
+  color: var(--gray-800);
+  font-weight: var(--font-weight-medium);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .fileSize {
-  font-size: 0.75rem;
-  color: #6b7280;
+  font-size: var(--font-size-xs);
+  color: var(--gray-500);
   flex-shrink: 0;
   margin-left: auto;
-  padding-left: 0.5rem;
+  padding-left: var(--spacing-2);
 }
 
 .removeButton {
   background: none;
   border: none;
-  color: #6b7280;
+  color: var(--gray-500);
   font-size: 1.5rem;
   line-height: 1;
   cursor: pointer;
-  padding: 0.25rem 0.5rem;
-  transition: color 0.2s ease;
+  padding: var(--spacing-1) var(--spacing-2);
+  transition: color var(--transition-base);
   flex-shrink: 0;
 
   &:hover {
-    color: #ef4444;
+    color: var(--error-500);
   }
 }
 
 .fileUploadError {
   display: block;
-  font-size: 0.875rem;
-  color: #ef4444;
+  font-size: var(--font-size-sm);
+  color: var(--error-500);
 }
 
 .imageList {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
+  gap: var(--spacing-4);
+  margin-top: var(--spacing-4);
 }
 
 .imageItem {
-  border: 1px solid #e5e7eb;
-  border-radius: 0.75rem;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  background-color: #ffffff;
+  background-color: var(--background-white);
 }
 
 .cropperContainer {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
+  gap: var(--spacing-4);
+  padding: var(--spacing-4);
 }
 
 .cropperWrapper {
   position: relative;
   width: 100%;
   height: 400px;
-  background-color: #000000;
-  border-radius: 0.5rem;
+  background-color: var(--background-black);
+  border-radius: var(--radius-md);
   overflow: hidden;
 }
 
 .cropperControls {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--spacing-3);
 }
 
 .zoomLabel {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-  color: #1f2937;
-  font-weight: 500;
+  gap: var(--spacing-2);
+  font-size: var(--font-size-sm);
+  color: var(--gray-800);
+  font-weight: var(--font-weight-medium);
 }
 
 .zoomSlider {
   width: 100%;
   height: 0.5rem;
-  border-radius: 0.25rem;
-  background: #d1d5db;
+  border-radius: var(--radius-sm);
+  background: var(--gray-300);
   outline: none;
   cursor: pointer;
 
@@ -202,34 +202,34 @@
     appearance: none;
     width: 1.25rem;
     height: 1.25rem;
-    border-radius: 50%;
-    background: #8b5cf6;
+    border-radius: var(--radius-full);
+    background: var(--purple-500);
     cursor: pointer;
   }
 
   &::-moz-range-thumb {
     width: 1.25rem;
     height: 1.25rem;
-    border-radius: 50%;
-    background: #8b5cf6;
+    border-radius: var(--radius-full);
+    background: var(--purple-500);
     cursor: pointer;
     border: none;
   }
 }
 
 .confirmCropButton {
-  padding: 0.75rem 1.5rem;
-  background-color: #8b5cf6;
-  color: #ffffff;
+  padding: var(--spacing-3) var(--spacing-6);
+  background-color: var(--purple-500);
+  color: var(--text-inverse);
   border: none;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 600;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color var(--transition-base);
 
   &:hover {
-    background-color: #7c3aed;
+    background-color: var(--purple-600);
   }
 
   &:active {
@@ -241,39 +241,39 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
+  gap: var(--spacing-4);
+  padding: var(--spacing-4);
 }
 
 .previewImage {
   width: 100%;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-md);
   object-fit: cover;
 }
 
 .previewActions {
   display: flex;
-  gap: 0.5rem;
+  gap: var(--spacing-2);
   justify-content: flex-end;
 }
 
 .uploadButton {
   padding: 0.625rem 1.25rem;
-  background-color: #10b981;
-  color: #ffffff;
+  background-color: var(--success-500);
+  color: var(--text-inverse);
   border: none;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 600;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color var(--transition-base);
 
   &:hover {
-    background-color: #059669;
+    background-color: var(--success-600);
   }
 
   &:disabled {
-    background-color: #9ca3af;
+    background-color: var(--gray-400);
     cursor: not-allowed;
   }
 
@@ -284,17 +284,17 @@
 
 .editButton {
   padding: 0.625rem 1.25rem;
-  background-color: #6b7280;
-  color: #ffffff;
+  background-color: var(--gray-500);
+  color: var(--text-inverse);
   border: none;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 600;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color var(--transition-base);
 
   &:hover {
-    background-color: #4b5563;
+    background-color: var(--gray-600);
   }
 
   &:active {
@@ -304,18 +304,18 @@
 
 .removeButton {
   background: none;
-  border: 1px solid #e5e7eb;
-  color: #6b7280;
+  border: 1px solid var(--gray-200);
+  color: var(--gray-500);
   padding: 0.625rem 1.25rem;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 600;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition-base);
 
   &:hover {
-    color: #ef4444;
-    border-color: #ef4444;
+    color: var(--error-500);
+    border-color: var(--error-500);
   }
 
   &:active {
@@ -325,42 +325,42 @@
 
 .uploadedBadge {
   position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  padding: 0.5rem 1rem;
-  background-color: #10b981;
-  color: #ffffff;
-  border-radius: 0.5rem;
-  font-size: 0.75rem;
-  font-weight: 600;
+  top: var(--spacing-6);
+  right: var(--spacing-6);
+  padding: var(--spacing-2) var(--spacing-4);
+  background-color: var(--success-500);
+  color: var(--text-inverse);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   display: flex;
   align-items: center;
-  gap: 0.25rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  gap: var(--spacing-1);
+  box-shadow: var(--shadow-sm);
 }
 
 .errorContainer {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  padding: 1rem;
-  background-color: #fef2f2;
-  border-left: 4px solid #ef4444;
+  gap: var(--spacing-3);
+  padding: var(--spacing-4);
+  background-color: var(--error-50);
+  border-left: 4px solid var(--error-500);
 }
 
 .errorText {
   margin: 0;
-  font-size: 0.875rem;
-  color: #ef4444;
-  font-weight: 500;
+  font-size: var(--font-size-sm);
+  color: var(--error-500);
+  font-weight: var(--font-weight-medium);
 }
 
 .loadingContainer {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
-  color: #6b7280;
-  font-size: 0.875rem;
+  padding: var(--spacing-8);
+  color: var(--gray-500);
+  font-size: var(--font-size-sm);
 }
 

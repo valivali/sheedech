@@ -2,12 +2,12 @@
   background: var(--primary-gold);
   color: var(--background-primary);
   border: none;
-  padding: 10px 20px;
-  border-radius: 25px;
-  font-size: 14px;
-  font-weight: 500;
+  padding: var(--spacing-2) var(--spacing-5);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: var(--transition-normal);
 
   &:hover {
     background: var(--primary-deep);
@@ -22,8 +22,8 @@
 
 @media (min-width: 768px) {
   .signInButton {
-    padding: 12px 30px;
-    font-size: 15px;
+    padding: var(--spacing-3) var(--spacing-8);
+    font-size: var(--font-size-base);
   }
 }
 

@@ -1,26 +1,28 @@
-"use client";
+"use client"
 
-import { Suspense } from "react";
-import { useUser, SignInButton, UserButton } from "@/lib/auth";
-import { Loading } from "@/components/UI/Loading";
-import styles from "./UserMenu.module.scss";
+import { Suspense } from "react"
+
+import { Loading } from "@/components/UI/Loading"
+import { SignInButton, UserButton, useUser } from "@/lib/auth"
+
+import styles from "./UserMenu.module.scss"
 
 function UserMenuContent() {
-  const { isSignedIn } = useUser();
+  const { isSignedIn } = useUser()
 
   if (!isSignedIn) {
     return (
       <SignInButton mode="modal">
         <button className={styles.signInButton}>Sign In</button>
       </SignInButton>
-    );
+    )
   }
 
   return (
     <div className={styles.userMenu}>
       <UserButton />
     </div>
-  );
+  )
 }
 
 export function UserMenu() {
@@ -28,6 +30,5 @@ export function UserMenu() {
     <Suspense fallback={<Loading variant="dots" size="sm" />}>
       <UserMenuContent />
     </Suspense>
-  );
+  )
 }
-

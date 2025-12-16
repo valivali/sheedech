@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 import { AddressInputWithSuggestions } from "@/components/Onboarding/Steps/PersonalInfo/AddressInputWithSuggestions"
@@ -12,34 +13,25 @@ export function SearchSection() {
     const [selectedAddress, setSelectedAddress] = useState<AddressSuggestion | null>(null)
     const [dateRange, setDateRange] = useState<DateRange>({ startDate: null, endDate: null })
 
-    const handleSearch = async () => {
+    const router = useRouter()
+
+    const handleSearch = () => {
         if (!selectedAddress?.geometry?.coordinates) {
             console.log("No valid address selected for search")
             return
         }
 
         const [lon, lat] = selectedAddress.geometry.coordinates
-        // 20km radius approx
-        const latDelta = 0.18
-        const lonDelta = 0.18 / Math.cos(lat * (Math.PI / 180))
 
         const params = new URLSearchParams({
-            minLat: (lat - latDelta).toString(),
-            maxLat: (lat + latDelta).toString(),
-            minLon: (lon - lonDelta).toString(),
-            maxLon: (lon + lonDelta).toString()
+            lat: lat.toString(),
+            lon: lon.toString()
         })
 
         if (dateRange.startDate) params.append("startDate", dateRange.startDate.toISOString())
         if (dateRange.endDate) params.append("endDate", dateRange.endDate.toISOString())
 
-        try {
-            const res = await fetch(`/api/events?${params.toString()}`)
-            const result = await res.json()
-            console.log("Search Results:", result)
-        } catch (error) {
-            console.error("Search error:", error)
-        }
+        router.push(`/event-mapper?${params.toString()}`)
     }
 
     return (

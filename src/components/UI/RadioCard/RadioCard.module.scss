@@ -1,20 +1,20 @@
 .radioCardGroup {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--spacing-3);
 }
 
 .radioCardGroupLabel {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #1f2937;
-  margin-bottom: 0.25rem;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-800);
+  margin-bottom: var(--spacing-1);
 }
 
 .radioCardGroupItems {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1rem;
+  gap: var(--spacing-4);
 }
 
 .radioCardItem {
@@ -23,27 +23,27 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem 1rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 0.75rem;
-  background-color: #ffffff;
+  padding: var(--spacing-6) var(--spacing-4);
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  background-color: var(--background-white);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition-base);
   min-height: 80px;
 
   &:hover {
-    border-color: #d1d5db;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-color: var(--gray-300);
+    box-shadow: var(--shadow-soft);
   }
 
   &:has(input:checked) {
-    border-color: #8b5cf6;
-    background-color: #f5f3ff;
-    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+    border-color: var(--purple-500);
+    background-color: var(--purple-50);
+    box-shadow: var(--shadow-focus-purple);
   }
 
   &:has(input:focus-visible) {
-    outline: 2px solid #8b5cf6;
+    outline: 2px solid var(--purple-500);
     outline-offset: 2px;
   }
 
@@ -61,28 +61,28 @@
 }
 
 .radioContent {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #374151;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-700);
   text-align: center;
-  transition: color 0.2s ease;
+  transition: color var(--transition-base);
 
   .radioCardItem:has(input:checked) & {
-    color: #8b5cf6;
+    color: var(--purple-500);
   }
 }
 
 .radioError {
   display: block;
-  font-size: 0.75rem;
-  color: #ef4444;
-  margin-top: 0.5rem;
+  font-size: var(--font-size-xs);
+  color: var(--error-500);
+  margin-top: var(--spacing-2);
 }
 
 .radioCardGroupError {
   display: block;
-  font-size: 0.875rem;
-  color: #ef4444;
-  margin-top: 0.25rem;
+  font-size: var(--font-size-sm);
+  color: var(--error-500);
+  margin-top: var(--spacing-1);
 }
 

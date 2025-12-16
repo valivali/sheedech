@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useState } from "react"
+import { useSearchParams } from "next/navigation"
 import { Popup } from "react-map-gl/maplibre"
 
 import { useEventsByBounds } from "@/api/frontend/events"
@@ -34,12 +35,27 @@ function calculateBounds(viewState: MapViewState): MapBounds {
 }
 
 export default function EventMapper() {
-  const [bounds, setBounds] = useState<MapBounds | null>(() => calculateBounds(CALGARY_VIEW))
+  const searchParams = useSearchParams()
+  const latParam = searchParams?.get("lat")
+  const lonParam = searchParams?.get("lon")
+  const startDate = searchParams?.get("startDate")
+  const endDate = searchParams?.get("endDate")
+
+  const initialView =
+    latParam && lonParam
+      ? {
+        latitude: parseFloat(latParam),
+        longitude: parseFloat(lonParam),
+        zoom: 11
+      }
+      : CALGARY_VIEW
+
+  const [bounds, setBounds] = useState<MapBounds | null>(() => calculateBounds(initialView))
   const [debouncedBounds, setDebouncedBounds] = useState<MapBounds | null>(bounds)
   const [selectedEvent, setSelectedEvent] = useState<EventCardData | null>(null)
   const [viewingEventId, setViewingEventId] = useState<string | null>(null)
 
-  const { data: events = [], isLoading } = useEventsByBounds(debouncedBounds)
+  const { data: events = [], isLoading } = useEventsByBounds(debouncedBounds, { startDate, endDate })
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -86,7 +102,7 @@ export default function EventMapper() {
       <Header />
       <main className={styles.main}>
         <div className={styles.mapWrapper}>
-          <Map initialViewState={CALGARY_VIEW} onViewStateChange={handleViewStateChange} onClick={handleMapClick}>
+          <Map initialViewState={initialView} onViewStateChange={handleViewStateChange} onClick={handleMapClick}>
             {events.map((event) => (
               <EventMarker key={event.id} event={event} onClick={handleMarkerClick} />
             ))}

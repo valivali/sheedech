@@ -1,5 +1,7 @@
 "use client"
 
+import Link from "next/link"
+
 import { EventCardData } from "@/types/event"
 import { EventCard } from "./EventCard"
 import styles from "./EventCardGrid.module.scss"
@@ -17,7 +19,9 @@ export const EventCardGrid = ({ events, className }: EventCardGridProps) => {
   return (
     <div className={`${styles.grid} ${className || ""}`}>
       {events.map((event) => (
-        <EventCard key={event.id} event={event} />
+        <Link href={`/events/${event.id}`} key={event.id} className={styles.cardLink}>
+          <EventCard event={event} />
+        </Link>
       ))}
     </div>
   )

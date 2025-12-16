@@ -18,9 +18,14 @@ interface UserEventsResponse {
   error?: string
 }
 
-export function useEventsByBounds(bounds: MapBounds | null) {
+export interface DateFilter {
+  startDate?: string | null
+  endDate?: string | null
+}
+
+export function useEventsByBounds(bounds: MapBounds | null, filters?: DateFilter) {
   return useQuery<EventCardData[]>({
-    queryKey: ["events", "bounds", bounds],
+    queryKey: ["events", "bounds", bounds, filters],
     queryFn: async () => {
       if (!bounds) {
         return []
@@ -32,6 +37,9 @@ export function useEventsByBounds(bounds: MapBounds | null) {
         minLon: bounds.minLon.toString(),
         maxLon: bounds.maxLon.toString()
       })
+
+      if (filters?.startDate) params.append("startDate", filters.startDate)
+      if (filters?.endDate) params.append("endDate", filters.endDate)
 
       const response = await fetch(`/api/events?${params.toString()}`)
       const result: EventsResponse = await response.json()

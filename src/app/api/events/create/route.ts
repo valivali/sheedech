@@ -83,6 +83,7 @@ export async function POST(request: NextRequest) {
       parking: validatedData.parking || null,
 
       cuisineTheme: validatedData.cuisineTheme || [],
+      customCuisineTheme: validatedData.customCuisineTheme || null,
       proposedMenu: validatedData.proposedMenu || [],
       isKosher: validatedData.isKosher || null,
       isVegetarian: validatedData.isVegetarian || null,

@@ -232,13 +232,13 @@ const eventSchemaBase = z.object({
   lat: z.number().nullable().transform((val) => val ?? undefined),
   lon: z.number().nullable().transform((val) => val ?? undefined),
   neighborhood: z.string().nullable().transform((val) => val ?? undefined),
-  accessibility: z.array(z.string()).transform((arr): AccessibilityType[] => 
+  accessibility: z.array(z.string()).transform((arr): AccessibilityType[] =>
     arr.map((val): AccessibilityType => val as AccessibilityType)
   ),
-  parking: z.string().nullable().transform((val): ParkingType | undefined => 
+  parking: z.string().nullable().transform((val): ParkingType | undefined =>
     val ? (val as ParkingType) : undefined
   ),
-  cuisineTheme: z.array(z.string()).transform((arr): CuisineTheme[] => 
+  cuisineTheme: z.array(z.string()).transform((arr): CuisineTheme[] =>
     arr.map((val): CuisineTheme => val as CuisineTheme)
   ),
   proposedMenu: z.array(z.string()),
@@ -247,7 +247,7 @@ const eventSchemaBase = z.object({
   isGlutenFree: z.boolean().nullable().transform((val) => val ?? undefined),
   hasNuts: z.boolean().nullable().transform((val) => val ?? undefined),
   hasDairy: z.boolean().nullable().transform((val) => val ?? undefined),
-  accommodatesDietary: z.array(z.string()).transform((arr): DietaryAccommodation[] => 
+  accommodatesDietary: z.array(z.string()).transform((arr): DietaryAccommodation[] =>
     arr.map((val): DietaryAccommodation => val as DietaryAccommodation)
   ),
   maxGuests: z.number(),
@@ -258,11 +258,11 @@ const eventSchemaBase = z.object({
   alcoholProvided: z.boolean().nullable().transform((val) => val ?? undefined),
   byob: z.boolean().nullable().transform((val) => val ?? undefined),
   whoElsePresent: z.array(z.string()),
-  atmosphereTags: z.array(z.string()).transform((arr): AtmosphereTag[] => 
+  atmosphereTags: z.array(z.string()).transform((arr): AtmosphereTag[] =>
     arr.map((val): AtmosphereTag => val as AtmosphereTag)
   ),
   houseRules: z.string().nullable().transform((val) => val ?? undefined),
-  contributionType: z.string().nullable().transform((val): ContributionType | undefined => 
+  contributionType: z.string().nullable().transform((val): ContributionType | undefined =>
     val ? (val as ContributionType) : undefined
   ),
   contributionAmount: z.number().nullable().transform((val) => val ?? undefined),
@@ -324,6 +324,7 @@ const eventCardDataSchema = eventSchemaBase.extend({
   user: z.object({
     onboarding: z.object({
       firstName: z.string(),
+      lastName: z.string().optional(),
     }).nullable(),
     diningImages: z.array(z.object({
       url: z.string(),
@@ -378,10 +379,18 @@ const eventCardDataSchema = eventSchemaBase.extend({
     updatedAt: data.updatedAt,
     photos: data.photos,
   };
-  
+
+  const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+
   return {
     ...eventWithPhotos,
+    occasionType: capitalize(data.occasionType) as OccasionType,
+    cuisineTheme: data.cuisineTheme.map(c => capitalize(c) as CuisineTheme),
+    atmosphereTags: data.atmosphereTags.map(t => capitalize(t) as AtmosphereTag),
+    accommodatesDietary: data.accommodatesDietary.map(d => capitalize(d) as DietaryAccommodation),
+    accessibility: data.accessibility.map(a => capitalize(a) as AccessibilityType),
     hostFirstName: data.user.onboarding?.firstName || 'Host',
+    hostLastName: data.user.onboarding?.lastName,
     hostDiningImages: data.user.diningImages.map((img) => ({ url: img.url })),
   };
 });
@@ -390,7 +399,7 @@ export function mapEventCardDataFromPrisma(
   event: PrismaEvent & {
     photos: PrismaEventPhoto[];
     user: {
-      onboarding: { firstName: string } | null;
+      onboarding: { firstName: string; lastName?: string } | null;
       diningImages: Array<{ url: string }>;
     };
   }

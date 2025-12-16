@@ -29,16 +29,17 @@ export enum ContributionType {
 }
 
 export enum CuisineTheme {
-  ITALIAN = "italian",
-  ISRAELI = "israeli",
-  KOSHER = "kosher",
-  VEGETARIAN = "vegetarian",
-  VEGAN = "vegan",
-  COMFORT = "comfort",
-  BBQ = "bbq",
   ASIAN = "asian",
+  BBQ = "bbq",
+  COMFORT = "comfort",
+  ISRAELI = "israeli",
+  ITALIAN = "italian",
+  KOSHER = "kosher",
   MEDITERRANEAN = "mediterranean",
-  MEXICAN = "mexican"
+  MEXICAN = "mexican",
+  VEGAN = "vegan",
+  VEGETARIAN = "vegetarian",
+  OTHER = "other"
 }
 
 export enum AccessibilityType {
@@ -199,5 +200,6 @@ export interface CreateEventResponse {
 
 export interface EventCardData extends EventWithPhotos {
   hostFirstName: string
+  hostLastName?: string
   hostDiningImages: Array<{ url: string }>
 }
