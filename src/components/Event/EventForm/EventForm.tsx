@@ -7,6 +7,7 @@ import { Controller, useForm } from "react-hook-form"
 import { AddressInputWithSuggestions } from "@/components/Onboarding/Steps/PersonalInfo/AddressInputWithSuggestions"
 import { Button } from "@/components/UI/Button"
 import { CheckboxItem, ControlledCheckboxGroup } from "@/components/UI/CheckboxGroup"
+import { Chip } from "@/components/UI/Chip"
 import { FileUpload } from "@/components/UI/FileUpload"
 import { Input } from "@/components/UI/Input"
 import { RadioGroup, RadioItem } from "@/components/UI/RadioGroup"
@@ -27,63 +28,14 @@ import { CreateEventFormData, createEventSchema } from "@/validations/event"
 
 import styles from "./EventForm.module.scss"
 
-const OCCASION_TYPES = [
-  { label: "Dinner", value: OccasionType.DINNER },
-  { label: "Holiday Festive Event", value: OccasionType.HOLIDAY },
-  { label: "Birthday", value: OccasionType.BIRTHDAY },
-  { label: "Casual Meetup", value: OccasionType.CASUAL },
-  { label: "BYOB Gathering", value: OccasionType.BYOB },
-  { label: "Cooking Workshop", value: OccasionType.WORKSHOP },
-  { label: "Cultural Food Exchange", value: OccasionType.CULTURAL },
-  { label: "Other", value: OccasionType.OTHER }
-]
-
-const CUISINE_THEMES = [
-  { label: "Italian", value: CuisineTheme.ITALIAN },
-  { label: "Israeli", value: CuisineTheme.ISRAELI },
-  { label: "Kosher", value: CuisineTheme.KOSHER },
-  { label: "Vegetarian", value: CuisineTheme.VEGETARIAN },
-  { label: "Vegan", value: CuisineTheme.VEGAN },
-  { label: "Comfort Food", value: CuisineTheme.COMFORT },
-  { label: "Open Fire BBQ", value: CuisineTheme.BBQ },
-  { label: "Asian", value: CuisineTheme.ASIAN },
-  { label: "Mediterranean", value: CuisineTheme.MEDITERRANEAN },
-  { label: "Mexican", value: CuisineTheme.MEXICAN },
-  { label: "Other", value: CuisineTheme.OTHER }
-]
-
-const DIETARY_OPTIONS = [
-  { label: "Gluten-Free", value: DietaryAccommodation.GLUTEN_FREE },
-  { label: "Vegan", value: DietaryAccommodation.VEGAN },
-  { label: "Kosher-Style", value: DietaryAccommodation.KOSHER_STYLE },
-  { label: "Nut-Free", value: DietaryAccommodation.NUT_FREE },
-  { label: "Lactose Intolerant", value: DietaryAccommodation.LACTOSE_INTOLERANT },
-  { label: "Cannot Accommodate", value: DietaryAccommodation.NONE }
-]
-
-const ACCESSIBILITY_OPTIONS = [
-  { label: "Elevator Available", value: AccessibilityType.ELEVATOR },
-  { label: "Wheelchair Accessible", value: AccessibilityType.WHEELCHAIR },
-  { label: "Stairs (Few)", value: AccessibilityType.STAIRS_FEW },
-  { label: "Stairs (Many)", value: AccessibilityType.STAIRS_MANY }
-]
-
-const ATMOSPHERE_TAGS = [
-  { label: "Chill", value: AtmosphereTag.CHILL },
-  { label: "Lively", value: AtmosphereTag.LIVELY },
-  { label: "Deep Conversations", value: AtmosphereTag.DEEP_CONVERSATIONS },
-  { label: "Music Background", value: AtmosphereTag.MUSIC },
-  { label: "Game Night After Dinner", value: AtmosphereTag.GAMES },
-  { label: "Quiet Environment", value: AtmosphereTag.QUIET }
-]
-
-const SOCIAL_OPTIONS = [
-  { label: "Kid-Friendly", value: "kidFriendly" },
-  { label: "Pet-Friendly", value: "petFriendly" },
-  { label: "Smoking Allowed", value: "smokingAllowed" },
-  { label: "Alcohol Provided", value: "alcoholProvided" },
-  { label: "BYOB Welcome", value: "byob" }
-]
+import {
+  ACCESSIBILITY_OPTIONS,
+  ATMOSPHERE_TAGS,
+  CUISINE_THEMES,
+  DIETARY_OPTIONS,
+  OCCASION_TYPES,
+  SOCIAL_OPTIONS
+} from "../constants"
 
 interface EventFormProps {
   initialValues?: Partial<CreateEventFormData>
@@ -146,7 +98,6 @@ export function EventForm({
     }
   })
 
-  // Update proposedMenu state when initialValues change or on mount
   useEffect(() => {
     if (initialValues?.proposedMenu) {
       setMenuItems(initialValues.proposedMenu)
@@ -223,9 +174,9 @@ export function EventForm({
               <label className={styles.label}>Occasion / Type *</label>
               <Select
                 options={OCCASION_TYPES}
-                value={OCCASION_TYPES.find((option) => option.value === field.value)?.label || ""}
+                value={OCCASION_TYPES.find((option: { label: string; value: OccasionType }) => option.value === field.value)?.label || ""}
                 onChange={(label) => {
-                  const selectedOption = OCCASION_TYPES.find((option) => option.label === label)
+                  const selectedOption = OCCASION_TYPES.find((option: { label: string; value: OccasionType }) => option.label === label)
                   field.onChange(selectedOption?.value)
                 }}
                 placeholder="Select occasion type"
@@ -389,11 +340,26 @@ export function EventForm({
             <>
               <ControlledCheckboxGroup
                 label="Theme / Cuisine *"
-                options={CUISINE_THEMES.filter((option) => option.value !== CuisineTheme.OTHER)}
+                options={CUISINE_THEMES.filter((option: { value: CuisineTheme }) => option.value !== CuisineTheme.OTHER)}
                 value={field.value || []}
                 onChange={field.onChange}
                 error={errors.cuisineTheme?.message}
               />
+
+              {field.value && field.value.length > 0 && (
+                <div className={styles.chips}>
+                  {field.value.map((theme: string) => (
+                    <Chip
+                      key={theme}
+                      label={theme}
+                      onRemove={() => {
+                        const newThemes = field.value.filter((t: string) => t !== theme)
+                        field.onChange(newThemes)
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
 
               <CheckboxItem
                 checked={selectedCuisineThemes.includes(CuisineTheme.OTHER)}
@@ -448,16 +414,11 @@ export function EventForm({
             </Button>
           </div>
           {menuItems.length > 0 && (
-            <ol className={styles.menuList}>
+            <div className={styles.chips}>
               {menuItems.map((item, index) => (
-                <li key={index}>
-                  {item}
-                  <button type="button" onClick={() => removeMenuItem(index)} className={styles.removeButton}>
-                    ×
-                  </button>
-                </li>
+                <Chip key={index} label={item} onRemove={() => removeMenuItem(index)} />
               ))}
-            </ol>
+            </div>
           )}
         </div>
 
@@ -465,12 +426,21 @@ export function EventForm({
           name="accommodatesDietary"
           control={control}
           render={({ field }) => (
-            <ControlledCheckboxGroup
-              label="Dietary Restrictions You Can Accommodate"
-              options={DIETARY_OPTIONS}
-              value={field.value || []}
-              onChange={field.onChange}
-            />
+            <>
+              <ControlledCheckboxGroup
+                label="Dietary Restrictions You Can Accommodate"
+                options={DIETARY_OPTIONS}
+                value={field.value || []}
+                onChange={field.onChange}
+              />
+              {field.value && field.value.length > 0 && (
+                <div className={styles.chips}>
+                  {field.value.map((diet: string) => (
+                    <Chip key={diet} label={diet} onRemove={() => field.onChange((field.value || []).filter((d: string) => d !== diet))} />
+                  ))}
+                </div>
+              )}
+            </>
           )}
         />
       </section>
@@ -533,7 +503,21 @@ export function EventForm({
           name="atmosphereTags"
           control={control}
           render={({ field }) => (
-            <ControlledCheckboxGroup label="Atmosphere" options={ATMOSPHERE_TAGS} value={field.value || []} onChange={field.onChange} />
+            <>
+              <ControlledCheckboxGroup
+                label="Atmosphere"
+                options={ATMOSPHERE_TAGS}
+                value={field.value || []}
+                onChange={field.onChange}
+              />
+              {field.value && field.value.length > 0 && (
+                <div className={styles.chips}>
+                  {field.value.map((tag: string) => (
+                    <Chip key={tag} label={tag} onRemove={() => field.onChange((field.value || []).filter((t: string) => t !== tag))} />
+                  ))}
+                </div>
+              )}
+            </>
           )}
         />
 

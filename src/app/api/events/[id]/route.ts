@@ -1,7 +1,6 @@
-import { currentUser } from "@clerk/nextjs/server"
 import { NextRequest, NextResponse } from "next/server"
-
 import { prisma } from "@/db/prisma"
+import { getAuthUser } from "@/lib/auth/user"
 import { mapEventCardDataFromPrisma, mapEventWithPhotosFromPrisma } from "@/mappers/event"
 import { EventCardData } from "@/types/event"
 
@@ -9,7 +8,8 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   try {
     const { id } = await params
 
-    const user = await currentUser()
+    const authUser = await getAuthUser()
+    const dbUser = authUser ? await prisma.user.findUnique({ where: { email: authUser.email } }) : null
 
     const event = await prisma.event.findUnique({
       where: { id },
@@ -49,7 +49,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       data: { viewCount: { increment: 1 } }
     })
 
-    const isHost = user?.id === event.userId
+    const isHost = dbUser?.id === event.userId
     const eventCardData = mapEventCardDataFromPrisma(event)
 
     if (!isHost) {
@@ -73,10 +73,18 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
-    const user = await currentUser()
+    const authUser = await getAuthUser()
 
-    if (!user) {
+    if (!authUser) {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 })
+    }
+
+    const dbUser = await prisma.user.findUnique({
+      where: { email: authUser.email }
+    })
+
+    if (!dbUser) {
+      return NextResponse.json({ success: false, error: "User not found" }, { status: 404 })
     }
 
     const event = await prisma.event.findUnique({
@@ -87,7 +95,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
       return NextResponse.json({ success: false, error: "Event not found" }, { status: 404 })
     }
 
-    if (event.userId !== user.id) {
+    if (event.userId !== dbUser.id) {
       return NextResponse.json({ success: false, error: "Forbidden" }, { status: 403 })
     }
 
@@ -101,6 +109,9 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
       updatedAt: _updatedAt,
       viewCount: _viewCount,
       slug: _slug,
+      hostFirstName: _hostFirstName,
+      hostLastName: _hostLastName,
+      hostDiningImages: _hostDiningImages,
       photos,
       eventDate,
       ...updateData

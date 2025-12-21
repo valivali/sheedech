@@ -12,7 +12,8 @@ type EventWithUserData = Prisma.EventGetPayload<{
       include: {
         onboarding: {
           select: {
-            firstName: true
+            firstName: true,
+            lastName: true
           }
         }
         diningImages: {
@@ -99,7 +100,8 @@ export async function GET() {
           include: {
             onboarding: {
               select: {
-                firstName: true
+                firstName: true,
+                lastName: true
               }
             },
             diningImages: {
@@ -118,8 +120,16 @@ export async function GET() {
       }
     })
 
-    const hostingData = hostingEvents.map((event: EventWithUserData) => mapEventCardDataFromPrisma(event))
-    const historicalData = historicalEvents.map((event: EventWithUserData) => mapEventCardDataFromPrisma(event))
+    const hostingData = hostingEvents.map((event: any) => {
+      const data = mapEventCardDataFromPrisma(event)
+      data.hostLastName = event.user.onboarding?.lastName
+      return data
+    })
+    const historicalData = historicalEvents.map((event: any) => {
+      const data = mapEventCardDataFromPrisma(event)
+      data.hostLastName = event.user.onboarding?.lastName
+      return data
+    })
 
     return NextResponse.json({
       success: true,

@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from "next/server"
 
 import { prisma } from "@/db/prisma"
-import { mapEventWithPhotosFromPrisma } from "@/mappers/event"
-import { EventCardData, EventStatus } from "@/types/event"
+import { getAuthUser } from "@/lib/auth/user"
+import { mapEventCardDataFromPrisma } from "@/mappers/event"
+import { EventCardData } from "@/types/event"
 
 export async function GET(request: NextRequest) {
   try {
+    const authUser = await getAuthUser()
+    const dbUser = authUser ? await prisma.user.findUnique({ where: { email: authUser.email } }) : null
+
     const searchParams = request.nextUrl.searchParams
     const limit = parseInt(searchParams.get("limit") || "100")
     const status = searchParams.get("status")
@@ -57,7 +61,8 @@ export async function GET(request: NextRequest) {
           include: {
             onboarding: {
               select: {
-                firstName: true
+                firstName: true,
+                lastName: true
               }
             },
             diningImages: {
@@ -78,12 +83,18 @@ export async function GET(request: NextRequest) {
     })
 
     const eventCardData: EventCardData[] = events.map((event) => {
-      const eventWithPhotos = mapEventWithPhotosFromPrisma(event)
-      return {
-        ...eventWithPhotos,
-        hostFirstName: event.user.onboarding?.firstName || "Host",
-        hostDiningImages: event.user.diningImages.map((img) => ({ url: img.url }))
+      const isHost = dbUser?.id === event.userId
+      const data = mapEventCardDataFromPrisma(event as any)
+
+      if (!isHost) {
+        data.formattedAddress = undefined
+        data.streetName = undefined
+        data.houseNumber = undefined
+        data.postalCode = undefined
+        data.hostLastName = undefined
       }
+
+      return data
     })
 
     return NextResponse.json({
